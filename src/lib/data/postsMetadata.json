@@ -1,0 +1,155 @@
+{
+  "001": {
+    "slug": "001",
+    "file": "001.md",
+    "originalPath": "/src/posts/001.md",
+    "htmlPath": "/posts/001.html",
+    "title": "Getting Started with Web Development",
+    "subtitle": "",
+    "description": "Web development is an exciting journey that combines creativity with technical skills.",
+    "author": "Anonymous",
+    "categories": [
+      "sveltekit",
+      "svelte"
+    ],
+    "date": "2025-4-14",
+    "updated": "2025-4-14",
+    "image": "",
+    "published": true
+  },
+  "002": {
+    "slug": "002",
+    "file": "002.md",
+    "originalPath": "/src/posts/002.md",
+    "htmlPath": "/posts/002.html",
+    "title": "Test of a Table",
+    "subtitle": "",
+    "description": "A Markdown Table.",
+    "author": "Anonymous",
+    "categories": [
+      "Markdown",
+      "Table"
+    ],
+    "date": "2023-4-16",
+    "updated": "2023-4-16",
+    "image": "",
+    "published": true
+  },
+  "003": {
+    "slug": "003",
+    "file": "003.md",
+    "originalPath": "/src/posts/003.md",
+    "htmlPath": "/posts/003.html",
+    "title": "The Importance of Cleaning Clinical Data for Accurate Trial Result",
+    "subtitle": "",
+    "description": "In this post, we explore why cleaning clinical data is important and how to do it effectively.",
+    "author": "Jean Maupas",
+    "categories": [
+      "CDM",
+      "AI",
+      "Clinical Trial"
+    ],
+    "date": "2022-07-01",
+    "updated": "2023-10-26",
+    "image": "",
+    "published": true,
+    "output": {
+      "html_document": {
+        "toc": true,
+        "toc_float": true,
+        "theme": "journal"
+      }
+    }
+  },
+  "004": {
+    "slug": "004",
+    "file": "004.md",
+    "originalPath": "/src/posts/004.md",
+    "htmlPath": "/posts/004.html",
+    "title": "The AI Revolution in Responsive Web Design",
+    "subtitle": "",
+    "description": "Why AI-generated responsive designs are becoming a game-changer in modern web development",
+    "author": "Avidys Team",
+    "categories": [
+      "AI",
+      "Responsive Design"
+    ],
+    "date": "2025-02-03",
+    "updated": "2025-02-03",
+    "image": "",
+    "published": true
+  },
+  "005": {
+    "slug": "005",
+    "file": "005.md",
+    "originalPath": "/src/posts/005.md",
+    "htmlPath": "/posts/005.html",
+    "title": "The Importance of Cleaning Clinical Data for Accurate Trial Result",
+    "subtitle": "My Subtitle",
+    "description": "Describe this awesome content",
+    "author": "Jean Maupas",
+    "categories": [
+      "blog",
+      "tutorial"
+    ],
+    "date": "2022-07-01",
+    "updated": "2023-10-26",
+    "image": "",
+    "published": true,
+    "output": {
+      "html_document": {
+        "toc": true,
+        "toc_float": true,
+        "theme": "journal"
+      }
+    }
+  },
+  "hello-world": {
+    "slug": "hello-world",
+    "file": "hello-world.md",
+    "originalPath": "/src/posts/hello-world.md",
+    "htmlPath": "/posts/hello-world.html",
+    "title": "Welcome to my blog!",
+    "subtitle": "",
+    "description": "Welcome to my first blog post!",
+    "author": "Anonymous",
+    "categories": [
+      "Uncategorized"
+    ],
+    "date": "2025-01-26",
+    "updated": "2025-01-26",
+    "image": "",
+    "published": true
+  },
+  "ts": {
+    "slug": "ts",
+    "file": "ts.md",
+    "originalPath": "/src/posts/ts.md",
+    "htmlPath": "/posts/ts.html",
+    "title": "Typescript goodies",
+    "subtitle": "",
+    "description": "\nLet me explain the key differences between TypeScript type and interface:\n\n  1. Extension/Inheritance:\n\n```ts\n// Interface can be extended\ninterface Animal {\n  name: string;\n}\ninterface Dog extends A...",
+    "author": "Anonymous",
+    "categories": [
+      "Uncategorized"
+    ],
+    "date": "2025-03-05T23:42:20.783Z",
+    "image": "",
+    "published": true
+  },
+  "welcome": {
+    "slug": "welcome",
+    "file": "welcome.md",
+    "originalPath": "/src/posts/welcome.md",
+    "htmlPath": "/posts/welcome.html",
+    "title": "Welcome to my blog",
+    "subtitle": "",
+    "description": "Welcome to my new blog! This is a sample post to get you started.",
+    "author": "Anonymous",
+    "categories": "Uncategorized",
+    "date": "2025-01-26",
+    "updated": "2025-01-26",
+    "image": "",
+    "published": false
+  }
+}

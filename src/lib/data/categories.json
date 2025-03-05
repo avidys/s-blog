@@ -1,0 +1,33 @@
+{
+  "sveltekit": [
+    "001"
+  ],
+  "svelte": [
+    "001"
+  ],
+  "Markdown": [
+    "002"
+  ],
+  "Table": [
+    "002"
+  ],
+  "CDM": [
+    "003"
+  ],
+  "AI": [
+    "003",
+    "004"
+  ],
+  "Clinical Trial": [
+    "003"
+  ],
+  "Responsive Design": [
+    "004"
+  ],
+  "blog": [
+    "005"
+  ],
+  "tutorial": [
+    "005"
+  ]
+}

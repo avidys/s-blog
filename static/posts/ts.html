@@ -1,0 +1,94 @@
+<p>Let me explain the key differences between TypeScript type and interface:</p>
+<ol>
+<li>Extension/Inheritance:</li>
+</ol>
+<pre><code class="language-ts">// Interface can be extended
+interface Animal {
+  name: string;
+}
+interface Dog extends Animal {
+  bark(): void;
+}
+
+// Type uses intersection
+type Animal = {
+  name: string;
+}
+type Dog = Animal &amp; {
+  bark(): void;
+}
+</code></pre>
+<ol start="2">
+<li>Declaration Merging:</li>
+</ol>
+<pre><code class="language-ts">// Interfaces can be merged
+interface User {
+  name: string;
+}
+interface User {
+  age: number;
+}
+// Results in: interface User { name: string; age: number; }
+
+// Types cannot be merged
+type User = {
+  name: string;
+}
+type User = {  // Error: Duplicate identifier &#39;User&#39;
+  age: number;
+}
+</code></pre>
+<ol start="3">
+<li>Computed Properties:</li>
+</ol>
+<pre><code class="language-ts">// Types can use computed properties
+type Keys = &#39;firstname&#39; | &#39;lastname&#39;;
+type DuoName = {
+  [key in Keys]: string;
+}
+
+// Interfaces cannot use computed properties directly
+interface DuoName {
+  [key in Keys]: string; // Error
+}
+</code></pre>
+<ol start="4">
+<li>Union Types:</li>
+</ol>
+<pre><code class="language-ts">// Types can be unions
+type Status = &#39;pending&#39; | &#39;approved&#39; | &#39;rejected&#39;;
+
+// Interfaces cannot be unions
+interface Status = &#39;pending&#39; | &#39;approved&#39; | &#39;rejected&#39;; // Error
+</code></pre>
+<ol start="5">
+<li>Primitives and Tuples:</li>
+</ol>
+<pre><code class="language-ts">// Types can be primitive
+type Name = string;
+type Coordinates = [number, number];
+
+// Interfaces must be objects
+interface Name = string; // Error
+interface Coordinates = [number, number]; // Error
+</code></pre>
+<ol start="6">
+<li>General Guidelines:</li>
+</ol>
+<ul>
+<li>Use interface when:<ul>
+<li>You need declaration merging</li>
+<li>You&#39;re defining object shapes</li>
+<li>You want to create an extensible API</li>
+<li>Working with object-oriented design</li>
+</ul>
+</li>
+<li>Use type when:<ul>
+<li>You need unions or intersections</li>
+<li>You&#39;re working with primitives</li>
+<li>You need tuple types</li>
+<li>You need computed properties</li>
+<li>You want to create type aliases</li>
+</ul>
+</li>
+</ul>
