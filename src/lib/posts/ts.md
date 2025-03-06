@@ -1,6 +1,7 @@
 ---
 title: Typescript goodies
 author: "Avidys"
+date: '2025-01-26'
 categories:
   - Typescript
   - Svelte
