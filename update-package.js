@@ -30,7 +30,7 @@ async function updatePackage() {
     
     execSync('pnpm build', { stdio: 'inherit' });
     execSync('git add .', { stdio: 'inherit' });
-    execSync(`git commit -m "${message}"`, { stdio: 'inherit' });
+    execSync(`git commit -m "V${version} - ${message}"`, { stdio: 'inherit' });
     execSync('git push -u origin main', { stdio: 'inherit' });
     execSync('pnpm publish --access=public', { stdio: 'inherit' });
 
