@@ -191,7 +191,7 @@
                 <span class="author">By {post.author}</span>
                 <span class="date">{post.date}</span>
                 <span class="category">
-                  {post.displayCategories.map(cat => 
+                  {(post.displayCategories ?? []).map(cat => 
                     cat.charAt(0).toUpperCase() + cat.slice(1)
                   ).join(', ')}
                 </span>
