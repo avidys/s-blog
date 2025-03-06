@@ -31,7 +31,7 @@ interface PostMetadata {
  * Vite plugin to generate a JSON file with markdown metadata and HTML conversion in separate files.
  * Also generates JSON files for categories and years.
  */
-export function markdownMetadataPlugin() {
+export default function markdownMetadataPlugin() {
 	return {
 	  name: 'vite-plugin-markdown-metadata',
 	  buildStart() {

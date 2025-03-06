@@ -1,6 +1,6 @@
 {
 	"name": "@avidys/s-blog",
-	"version": "1.1.1",
+	"version": "1.1.3",
 	"description": "A blog component built with SvelteKit and Markdown",
 	"author": "Avidys",
 	"license": "GPL-3.0-only",
@@ -22,7 +22,8 @@
 		"lint": "eslint . && prettier --check .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "npm run test:unit -- --run",
+		"postinstall": "node update-script.js"
 	},
 	"files": [
 		"dist",
@@ -32,13 +33,15 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"svelte": "./dist/index.js",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"svelte": "./dist/index.js",
+			"default": "./dist/index.js"
 		}
 	},
 	"peerDependencies": {
