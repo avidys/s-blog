@@ -1,6 +1,6 @@
 {
 	"name": "@avidys/s-blog",
-	"version": "1.1.5",
+	"version": "1.1.6",
 	"description": "A blog component built with SvelteKit and Markdown",
 	"author": "Avidys",
 	"license": "GPL-3.0-only",

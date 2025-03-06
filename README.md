@@ -81,6 +81,19 @@ pnpm md2html
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Update
+
+The `build` command may update some posts, so you need to commit first and then publish the changes:
+
+```bash
+update package.json version
+pnpm build
+git add .
+git commit -am "build"
+git push -u origin main
+pnpm publish --access=public
+```
+
 ## License
 
 GPL-3 License
@@ -88,7 +101,7 @@ GPL-3 License
 ## Credits
 
 - Author: [Avidys] (<https://www.avidys.com>)
-- node team 
-- svelte team
-- marked.js
-- grey-matter
+- node team <https://nodejs.org/en>
+- svelte team <https://svelte.dev/> <https://www.npmjs.com/package/svelte>
+- marked package <https://www.npmjs.com/package/marked>
+- grey-matter package <https://www.npmjs.com/package/gray-matter>
