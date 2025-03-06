@@ -21,6 +21,15 @@
   let selectedYear: string | null = null;
   let selectedAuthor: string | null = null;
 
+  const KNOWN_ACRONYMS = {
+    'cdm': 'CDM',
+    'ai': 'AI',
+    'typescript': 'TypeScript',
+    'javascript': 'JavaScript',
+    'sveltekit': 'SvelteKit',
+    'clinical trial': 'Clinical Trial'
+  };
+
   function handleYearSelect(year: string) {
     selectedYear = (selectedYear === year ? null : year);
   }
@@ -32,7 +41,7 @@
       (post.description ?? '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategories.length === 0 || 
       (Array.isArray(post.categories) ? post.categories : (post.categories ? [post.categories] : [])).some(cat => 
-        cat && selectedCategories.includes(cat)
+        cat && selectedCategories.includes(cat.toLowerCase())
       );
     const matchesYear = !selectedYear || 
       new Date(post.date).getFullYear().toString() === selectedYear;
@@ -136,7 +145,8 @@
             class:selected={selectedCategories.includes(category.toLowerCase())}
             on:click={() => handleCategorySelect(category.toLowerCase())}
           >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {KNOWN_ACRONYMS[category] ?? 
+              (category.charAt(0).toUpperCase() + category.toLowerCase().slice(1))}
           </button>
         {/each}
       </div>
