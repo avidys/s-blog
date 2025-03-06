@@ -38,10 +38,13 @@ export function md2html({
 	// const staticDir = path.resolve(process.cwd(), 'static');
 	// const htmlOutputDir = path.join(staticDir, 'posts');
 	
-	// Ensure the output directory exists.
-	if (!fs.existsSync(htmlOutputDir)) {
-	  fs.mkdirSync(htmlOutputDir, { recursive: true });
-	}
+	// Ensure all required directories exist
+	[postsDir, dataDir, staticDir, htmlOutputDir].forEach(dir => {
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir, { recursive: true });
+			console.log(`Created directory: ${dir}`);
+		}
+	});
 	
 	// Read all markdown files in the posts directory.
 	const files = fs.readdirSync(postsDir).filter((file) => file.endsWith('.md'));
@@ -163,3 +166,4 @@ export function markdownMetadataPlugin() {
 	};
 }
   
+md2html()
