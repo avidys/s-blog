@@ -2,8 +2,6 @@ import { svelteTesting } from '@testing-library/svelte/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { markdownMetadataPlugin } from './src/lib/md2html.js';
-import { resolve } from 'path';
-// ...   export default defineConfig({    plugins: [sveltekit(), /* your other plugins */],    resolve: {     alias: {      '$lib': resolve(__dirname, 'src/lib')     }    }   });
 
 
 export default defineConfig({

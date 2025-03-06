@@ -21,7 +21,7 @@
   let selectedYear: string | null = null;
   let selectedAuthor: string | null = null;
 
-  const KNOWN_ACRONYMS = {
+  const KNOWN_ACRONYMS: { [key: string]: string } = {
     'cdm': 'CDM',
     'ai': 'AI',
     'typescript': 'TypeScript',

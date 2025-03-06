@@ -1,6 +1,16 @@
 {
-	"name": "s-blog",
-	"version": "1.0.0",
+	"name": "@avidys/s-blog",
+	"version": "1.1.0",
+	"description": "A blog component built with SvelteKit and Markdown",
+	"author": "Avidys",
+	"license": "GPL-3.0-only",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"blog",
+		"markdown"
+	],
+	"homepage": "https://github.com/avidys/s-blog",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
