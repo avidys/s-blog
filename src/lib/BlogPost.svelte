@@ -112,8 +112,10 @@
       <div class="post-meta">
         <span>Posted by <button class="link-button" on:click={() => onAuthorClick(post.author)}>{post.author}</button></span>
         <span>on {post.date}</span>
-        <span>in {#each post.categories || [] as category, i}
-          <button class="link-button" on:click={() => onCategoryClick(category)}>{category}</button>{#if i < (post.categories?.length || 0) - 1}, {/if}
+        <span>in {#each post.displayCategories as category, i}
+          <button class="link-button" on:click={() => onCategoryClick(category.toLowerCase())}>
+            {category.charAt(0).toUpperCase() + category.slice(1)}
+          </button>{#if i < post.displayCategories.length - 1}, {/if}
         {/each}</span>
       </div>
     </header>

@@ -1,11 +1,11 @@
 ---
 title: Welcome to my blog!
 date: '2025-01-26'
+author: "Jean Maupas"
 description: Welcome to my first blog post!
 published: true
 ---
 
-# Welcome to my blog!
 
 This is my first blog post using SvelteKit and Markdown. Here's what you can do with this blog system:
 

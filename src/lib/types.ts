@@ -15,7 +15,8 @@ export interface IBlogPost {
     subtitle?: string;
     description?: string;
     author: string;
-    categories?: string[];
+    categories: string[];
+    displayCategories: string[];
     date: string;
     updated?: string;
     content?: string;

@@ -1,11 +1,15 @@
 ---
 title: Typescript goodies
+author: "Avidys"
+categories:
+  - Typescript
+  - Svelte
 published: true
 ---
 
 Let me explain the key differences between TypeScript type and interface:
 
-  1. Extension/Inheritance:
+1. Extension/Inheritance:
 
 ```ts
 // Interface can be extended
@@ -25,7 +29,7 @@ type Dog = Animal & {
 }
 ```
 
- 2. Declaration Merging:
+2. Declaration Merging:
 
 ```ts
 // Interfaces can be merged
@@ -46,7 +50,7 @@ type User = {  // Error: Duplicate identifier 'User'
 }
 ```
 
- 3. Computed Properties:
+3. Computed Properties:
 
 ```ts
 // Types can use computed properties
@@ -61,7 +65,7 @@ interface DuoName {
 }
 ```
 
- 4. Union Types:
+4. Union Types:
 
 ```ts
 // Types can be unions
@@ -71,7 +75,7 @@ type Status = 'pending' | 'approved' | 'rejected';
 interface Status = 'pending' | 'approved' | 'rejected'; // Error
 ```
 
- 5. Primitives and Tuples:
+5. Primitives and Tuples:
 
 ```ts
 // Types can be primitive
@@ -83,7 +87,7 @@ interface Name = string; // Error
 interface Coordinates = [number, number]; // Error
 ```
 
- 6. General Guidelines:
+6. General Guidelines:
 
    - Use interface when:
         - You need declaration merging

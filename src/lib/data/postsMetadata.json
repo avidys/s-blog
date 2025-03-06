@@ -12,6 +12,10 @@
       "sveltekit",
       "svelte"
     ],
+    "displayCategories": [
+      "sveltekit",
+      "svelte"
+    ],
     "date": "2025-4-14",
     "updated": "2025-4-14",
     "image": "",
@@ -27,6 +31,10 @@
     "description": "A Markdown Table.",
     "author": "Anonymous",
     "categories": [
+      "Markdown",
+      "Table"
+    ],
+    "displayCategories": [
       "Markdown",
       "Table"
     ],
@@ -49,60 +57,15 @@
       "AI",
       "Clinical Trial"
     ],
+    "displayCategories": [
+      "CDM",
+      "AI",
+      "Clinical Trial"
+    ],
     "date": "2022-07-01",
     "updated": "2023-10-26",
-    "image": "",
-    "published": true,
-    "output": {
-      "html_document": {
-        "toc": true,
-        "toc_float": true,
-        "theme": "journal"
-      }
-    }
-  },
-  "004": {
-    "slug": "004",
-    "file": "004.md",
-    "originalPath": "/src/posts/004.md",
-    "htmlPath": "/posts/004.html",
-    "title": "The AI Revolution in Responsive Web Design",
-    "subtitle": "",
-    "description": "Why AI-generated responsive designs are becoming a game-changer in modern web development",
-    "author": "Avidys Team",
-    "categories": [
-      "AI",
-      "Responsive Design"
-    ],
-    "date": "2025-02-03",
-    "updated": "2025-02-03",
     "image": "",
     "published": true
-  },
-  "005": {
-    "slug": "005",
-    "file": "005.md",
-    "originalPath": "/src/posts/005.md",
-    "htmlPath": "/posts/005.html",
-    "title": "The Importance of Cleaning Clinical Data for Accurate Trial Result",
-    "subtitle": "My Subtitle",
-    "description": "Describe this awesome content",
-    "author": "Jean Maupas",
-    "categories": [
-      "blog",
-      "tutorial"
-    ],
-    "date": "2022-07-01",
-    "updated": "2023-10-26",
-    "image": "",
-    "published": true,
-    "output": {
-      "html_document": {
-        "toc": true,
-        "toc_float": true,
-        "theme": "journal"
-      }
-    }
   },
   "hello-world": {
     "slug": "hello-world",
@@ -112,8 +75,11 @@
     "title": "Welcome to my blog!",
     "subtitle": "",
     "description": "Welcome to my first blog post!",
-    "author": "Anonymous",
+    "author": "Jean Maupas",
     "categories": [
+      "uncategorized"
+    ],
+    "displayCategories": [
       "Uncategorized"
     ],
     "date": "2025-01-26",
@@ -128,12 +94,17 @@
     "htmlPath": "/posts/ts.html",
     "title": "Typescript goodies",
     "subtitle": "",
-    "description": "\nLet me explain the key differences between TypeScript type and interface:\n\n  1. Extension/Inheritance:\n\n```ts\n// Interface can be extended\ninterface Animal {\n  name: string;\n}\ninterface Dog extends A...",
-    "author": "Anonymous",
+    "description": "\nLet me explain the key differences between TypeScript type and interface:\n\n1. Extension/Inheritance:\n\n```ts\n// Interface can be extended\ninterface Animal {\n  name: string;\n}\ninterface Dog extends Ani...",
+    "author": "Avidys",
     "categories": [
-      "Uncategorized"
+      "Typescript",
+      "Svelte"
     ],
-    "date": "2025-03-05T23:42:20.783Z",
+    "displayCategories": [
+      "Typescript",
+      "Svelte"
+    ],
+    "date": "2025-03-06T02:12:04.296Z",
     "image": "",
     "published": true
   },
@@ -146,7 +117,12 @@
     "subtitle": "",
     "description": "Welcome to my new blog! This is a sample post to get you started.",
     "author": "Anonymous",
-    "categories": "Uncategorized",
+    "categories": [
+      "Uncategorized"
+    ],
+    "displayCategories": [
+      "Uncategorized"
+    ],
     "date": "2025-01-26",
     "updated": "2025-01-26",
     "image": "",

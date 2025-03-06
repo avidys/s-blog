@@ -10,6 +10,23 @@ marked.setOptions({
   async: false  // This is the key setting to ensure synchronous operation
 });
 
+interface PostMetadata {
+  slug: string;
+  file: string;
+  originalPath: string;
+  htmlPath: string;
+  title: string;
+  subtitle?: string;
+  description: string;
+  author: string;
+  categories: string[];
+  date: string;
+  updated?: string;
+  image?: string;
+  published: boolean;
+  displayCategories: string[];
+}
+
 /**
  * Vite plugin to generate a JSON file with markdown metadata and HTML conversion in separate files.
  * Also generates JSON files for categories and years.
@@ -33,10 +50,10 @@ export function markdownMetadataPlugin() {
 		const files = fs.readdirSync(postsDir).filter((file) => file.endsWith('.md'));
 		
 		// Containers for aggregated data.
-		const postsMetadata: Record<string, any> = {}; // any[] = [];
-		const categoriesMap: Record<string, any[]> = {};
-		const yearsMap: Record<string, any[]> = {};
-		const authorsMap: Record<string, any[]> = {};
+		const postsMetadata: Record<string, PostMetadata> = {};
+		const categoriesMap: Record<string, string[]> = {};
+		const yearsMap: Record<string, string[]> = {};
+		const authorsMap: Record<string, string[]> = {};
 		
 		// Process each markdown file.
 		files.forEach((file) => {
@@ -60,8 +77,15 @@ export function markdownMetadataPlugin() {
 			// Write the HTML file.
 			fs.writeFileSync(htmlFilePath, html);
 			console.log(`Generated HTML for ${file} at /posts/${htmlFileName}`);
-			
+			if (typeof data.categories === "string") { data.categories = [data.categories] }
+
 			// Prepare metadata. You might also want to store the path to the generated HTML.
+			const processCategories = (cats: string | string[] | undefined): string[] => {
+				if (!cats) return ['uncategorized'];
+				const categories = Array.isArray(cats) ? cats : [cats];
+				return categories.map(cat => cat.toLowerCase());
+			};
+
 			const metadata = {
 				slug: slug,
 				file: file, // original markdown file name
@@ -71,21 +95,25 @@ export function markdownMetadataPlugin() {
 				subtitle: data.subtitle || '',
 				description: (data.description || content.slice(0, 200) + '...'),
 				author: data.author || 'Anonymous',
-				categories: data.categories || ['Uncategorized'],
+				categories: processCategories(data.categories),
+				displayCategories: Array.isArray(data.categories) 
+					? data.categories 
+					: (data.categories ? [data.categories] : ['Uncategorized']),
 				date: data.date || new Date(),
 				updated: data.updated || data.date,
 				image: data.image || '',
 				published: data.published !== false,  // default to true if not specified	
 				...data
-			};
+			} as PostMetadata;
 
 			postsMetadata[slug] = metadata; //.push(metadata);
 			
 			// Aggregate by categories (assuming data.categories is an array).
 			if (Array.isArray(data.categories)) {
 				data.categories.forEach((cat) => {
-				if (!categoriesMap[cat]) categoriesMap[cat] = [];
-				categoriesMap[cat].push(slug); //metadata);
+					const lowerCat = cat.toLowerCase();
+					if (!categoriesMap[lowerCat]) categoriesMap[lowerCat] = [];
+					categoriesMap[lowerCat].push(slug);
 				});
 			}
 			

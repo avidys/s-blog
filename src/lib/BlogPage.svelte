@@ -106,7 +106,7 @@
       {/if}
 
       <div class="sidebar-widget">
-        <h3>Archives</h3>
+        <h3>Years</h3>
         <button 
           class:selected={!selectedYear}
           on:click={() => handleYearSelect(selectedYear ?? '')}
@@ -133,10 +133,10 @@
         </button>
         {#each $blogStore.postsCategories as category}
           <button 
-            class:selected={selectedCategories.includes(category)}
-            on:click={() => handleCategorySelect(category)}
+            class:selected={selectedCategories.includes(category.toLowerCase())}
+            on:click={() => handleCategorySelect(category.toLowerCase())}
           >
-            {category}
+            {category.charAt(0).toUpperCase() + category.slice(1)}
           </button>
         {/each}
       </div>
@@ -180,7 +180,11 @@
               <div class="post-meta">
                 <span class="author">By {post.author}</span>
                 <span class="date">{post.date}</span>
-                <span class="category">{Array.isArray(post.categories) ? post.categories.join(', ') : post.categories}</span>
+                <span class="category">
+                  {post.displayCategories.map(cat => 
+                    cat.charAt(0).toUpperCase() + cat.slice(1)
+                  ).join(', ')}
+                </span>
               </div>
               <p class="excerpt">{post.description}</p>
               <div class="post-footer">

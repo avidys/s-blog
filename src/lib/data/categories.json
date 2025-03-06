@@ -3,31 +3,28 @@
     "001"
   ],
   "svelte": [
-    "001"
+    "001",
+    "ts"
   ],
-  "Markdown": [
+  "markdown": [
     "002"
   ],
-  "Table": [
+  "table": [
     "002"
   ],
-  "CDM": [
+  "cdm": [
     "003"
   ],
-  "AI": [
-    "003",
-    "004"
-  ],
-  "Clinical Trial": [
+  "ai": [
     "003"
   ],
-  "Responsive Design": [
-    "004"
+  "clinical trial": [
+    "003"
   ],
-  "blog": [
-    "005"
+  "typescript": [
+    "ts"
   ],
-  "tutorial": [
-    "005"
+  "uncategorized": [
+    "welcome"
   ]
 }

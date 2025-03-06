@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
 import type { IBlogPost } from './types.ts';
-import postsMetadata from './data/postsMetadata.json';
-import postsCategories from './data/categories.json';
-import postsYears from './data/years.json';
+import postsMetadata from './data/postsMetadata.json' assert { type: "json" };
+import postsCategories from './data/categories.json' assert { type: "json" };
+import postsYears from './data/years.json' assert { type: "json" };
 
 function createBlogStore() {
-  const { subscribe, update, set } = writable<{
+  const { subscribe, update } = writable<{
     posts: IBlogPost[];
     selectedPost: IBlogPost | null;
     searchTerm: string;
@@ -13,7 +13,7 @@ function createBlogStore() {
     postsCategories: string[];
     postsYears: string[];
   }>({
-    posts: Object.values(postsMetadata),
+    posts: Object.values(postsMetadata) as IBlogPost[],
     selectedPost: null,
     searchTerm: '',
     selectedCategory: 'All',
