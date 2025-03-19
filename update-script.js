@@ -1,4 +1,15 @@
-import { readFileSync, writeFileSync, path } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
+import path from 'path';
+
+/**
+ * Script to update package.json with md2html build command
+ * 
+ * This script:
+ * 1. Reads the package.json file
+ * 2. Resolves the path to md2html.js executable
+ * 3. Adds or updates the md2html script in package.json
+ * 4. Writes the updated package.json back to disk
+ */
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
