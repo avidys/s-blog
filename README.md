@@ -81,18 +81,32 @@ pnpm md2html
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Update
+## Publishing Updates
 
 The `build` command may update some posts, so you need to commit first and then publish the changes:
 
 ```bash
-update package.json version
 pnpm build
 git add .
 git commit -am "build"
 git push -u origin main
 pnpm publish --access=public
 ```
+
+or more simply use the script update-script.js to update the package.json version, build the project, commit and push to remote repository and publish to npm registry:
+
+```bash
+node update-package.js
+```
+
+This will:
+
+1. Show current git status
+2. Update package version
+3. Build the project
+4. Commit and tag changes
+5. Push to remote repository
+6. Publish to npm registry
 
 ## License
 

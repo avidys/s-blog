@@ -164,6 +164,5 @@ export function markdownMetadataPlugin() {
 		md2html(); // Will use default paths if no arguments provided
 	  }
 	};
-}
-  
+}  
 md2html()
