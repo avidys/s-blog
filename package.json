@@ -1,6 +1,6 @@
 {
   "name": "@avidys/s-blog",
-  "version": "1.1.11",
+  "version": "1.2.0",
   "description": "A blog component built with SvelteKit and Markdown",
   "author": "Avidys",
   "license": "GPL-3.0-only",
@@ -23,7 +23,7 @@
     "format": "prettier --write .",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
-    "postinstall": "pnpm package-json-update",
+    "postinstall": "node ./dist/package-json-update.js",
     "updatenpm": "node ./dist/update-package.js"
   },
   "files": [
@@ -45,6 +45,9 @@
       "default": "./dist/index.js"
     },
     "./markdownMetadataPlugin": {
+      "default": "./dist/md2html.js"
+    },
+    "./md2html": {
       "default": "./dist/md2html.js"
     }
   },
@@ -87,7 +90,8 @@
     "marked": "^15.0.7"
   },
   "bin": {
-    "blog-update": "./dist/cli.js",
-    "package-json-update": "./dist/package-json-update.js"
+    "package-json-update": "./dist/package-json-update.js",
+    "blogs-update": "./dist/md2html-cli.js",
+    "md2html": "./dist/md2html-cli.js"
   }
 }

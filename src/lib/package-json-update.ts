@@ -15,20 +15,61 @@ import path from 'path';
 
 function updatePackageJson() {
   try {
-    const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
-    const exe = path.resolve(process.cwd(), 'dist/md2html.js');
-    if (!existsSync(exe)) {
-        console.error("md2html.js not found at path: ", exe);
-      } else {
-        console.log("md2html.js found at path: ", exe);
-        return;
+    // Get the parent project's directory (where s-blog is being installed)
+    const parentDir = process.env.INIT_CWD || process.cwd();
+    const packageJsonPath = path.join(parentDir, 'package.json');
+    
+    if (!existsSync(packageJsonPath)) {
+      console.error(`Package.json not found at ${packageJsonPath}`);
+      return;
+    }
+    
+    const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+    
+    // Try multiple possible locations for md2html.js
+    let md2htmlPath = path.resolve(__dirname, '../md2html.js');
+    
+    // If not found at the primary location, check secondary locations
+    if (!existsSync(md2htmlPath)) {
+      const alternativePaths = [
+        path.resolve(__dirname, '../../md2html.js'),
+        path.resolve(process.cwd(), 'node_modules/s-blog/md2html.js')
+      ];
+      
+      for (const altPath of alternativePaths) {
+        if (existsSync(altPath)) {
+          md2htmlPath = altPath;
+          break;
+        }
       }
+    }
+    
+    if (!existsSync(md2htmlPath)) {
+      console.error("ERROR: md2html.js not found. Please ensure s-blog is properly installed.");
+      console.error("Tried looking at paths:", [
+        path.resolve(__dirname, '../md2html.js'),
+        path.resolve(__dirname, '../../md2html.js'),
+        path.resolve(process.cwd(), 'node_modules/s-blog/md2html.js')
+      ]);
+      return;
+    }
+    
+    console.log("md2html.js found at path:", md2htmlPath);
+
     // Add or update scripts
     pkg.scripts = pkg.scripts || {};
-    pkg.scripts.md2html = `node ${exe}`;
+    pkg.scripts.md2html = `node "${md2htmlPath}"`;
+    pkg.scripts.blog_update = `node "${md2htmlPath}"`;
 
-    writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
-    console.log('✓ Updated package.json with md2html script');
+    // Make sure the paths are properly escaped for cross-platform compatibility
+    if (process.platform === 'win32') {
+      pkg.scripts.md2html = pkg.scripts.md2html.replace(/\\/g, '\\\\');
+      pkg.scripts.blog_update = pkg.scripts.blog_update.replace(/\\/g, '\\\\');
+    }
+
+    writeFileSync(packageJsonPath, JSON.stringify(pkg, null, 2));
+    console.log('✓ Updated package.json with md2html and blog_update scripts');
+    console.log('  You can now run "npm run blog_update" to generate HTML from your markdown files');
   } catch (error) {
     if (error instanceof Error) {
       console.error('✗ Failed to update package.json:', error.message);
