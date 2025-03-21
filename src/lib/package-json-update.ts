@@ -27,27 +27,31 @@ function updatePackageJson() {
     const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
     
     // Use the node_modules path to locate md2html.js
-    const nodeModulesPath = path.join(parentDir, 'node_modules', '@avidys', 's-blog');
-    let md2htmlPath = path.join(nodeModulesPath, 'dist', 'md2html.js');
-    
     // If not found at the primary location, check secondary locations
     const alternativePaths = [
+      path.join('md2html.js'),
+      path.join('src', 'md2html.js'),
+      path.join('src', 'lib', 'md2html.js'),
+      path.join('dist', 'md2html.js'),
+      path.join('node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
+      path.join(parentDir, 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
+      path.join(process.cwd(), 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
+      path.join('node_modules', 's-blog', 'dist', 'md2html.js'),
       path.join(parentDir, 'node_modules', 's-blog', 'dist', 'md2html.js'),
       path.join(process.cwd(), 'node_modules', 's-blog', 'dist', 'md2html.js')
     ];
 
-    if (!existsSync(md2htmlPath)) {
-      for (const altPath of alternativePaths) {
-        if (existsSync(altPath)) {
-          md2htmlPath = altPath;
-          break;
-        }
+    let md2htmlPath = '';
+    for (const altPath of alternativePaths) {
+      if (existsSync(altPath)) {
+        md2htmlPath = altPath;
+        break;
       }
     }
     
     if (!existsSync(md2htmlPath)) {
       console.error("ERROR: md2html.js not found. Please ensure s-blog is properly installed.");
-      console.error("Tried looking at paths:", [md2htmlPath, ...alternativePaths]);
+      console.error("Tried looking at paths:", alternativePaths);
       return;
     }
     

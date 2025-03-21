@@ -28,7 +28,7 @@ interface PostMetadata {
 }
 
 export function md2html({
-  postsDir = path.resolve(process.cwd(), 'src/lib/posts'),
+  postsDir = findPostsDirectory(),
   dataDir = path.resolve(process.cwd(), 'src/lib/data'),
   staticDir = path.resolve(process.cwd(), 'static'),
   htmlOutputDir = path.join(staticDir, 'posts')
@@ -60,7 +60,7 @@ export function md2html({
 		//const slug = file.split('/').pop()?.replace('.md', '');
 		const fileNameWithoutExt = file.split('/').pop()?.replace('.md', '');
 		const slug = fileNameWithoutExt || file.replace('.md', ''); // Fallback to file if undefined
-		 const filePath = path.join(postsDir, file);
+		const filePath = path.join(postsDir, file);
 		const fileContent = fs.readFileSync(filePath, 'utf-8');
 	  
 		// Parse frontmatter and content.
@@ -151,6 +151,30 @@ export function md2html({
 	const authorsOutputPath = path.join(dataDir, 'authors.json');
 	fs.writeFileSync(authorsOutputPath, JSON.stringify(authorsMap, null, 2));
 	console.log(`Generated authors JSON at ${authorsOutputPath}`);
+}
+
+function findPostsDirectory(): string {
+  const possibleLocations = [
+    path.resolve(process.cwd(), 'src/lib/posts'),
+    path.resolve(process.cwd(), 'src/lib/blogs'),
+    path.resolve(process.cwd(), 'src/posts'),
+    path.resolve(process.cwd(), 'src/blogs'),
+    path.resolve(process.cwd(), 'posts'),
+    path.resolve(process.cwd(), 'blogs')
+  ];
+
+  for (const location of possibleLocations) {
+    if (fs.existsSync(location)) {
+      console.log(`Found posts directory at: ${location}`);
+      return location;
+    }
+  }
+
+  // If no existing directory is found, create the default one
+  const defaultDir = path.resolve(process.cwd(), 'posts');
+  fs.mkdirSync(defaultDir, { recursive: true });
+  console.log(`Created default posts directory at: ${defaultDir}`);
+  return defaultDir;
 }
 
 /**
