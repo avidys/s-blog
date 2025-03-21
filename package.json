@@ -1,6 +1,6 @@
 {
   "name": "@avidys/s-blog",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "A blog component built with SvelteKit and Markdown",
   "author": "Avidys",
   "license": "GPL-3.0-only",
@@ -23,7 +23,7 @@
     "format": "prettier --write .",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
-    "postinstall": "node ./dist/update-script.js",
+    "postinstall": "pnpm package-json-update",
     "updatenpm": "node ./dist/update-package.js"
   },
   "files": [
@@ -87,6 +87,7 @@
     "marked": "^15.0.7"
   },
   "bin": {
-    "s-blog-update": "./dist/cli.js"
+    "blog-update": "./dist/cli.js",
+    "package-json-update": "./dist/package-json-update.js"
   }
 }
