@@ -32,7 +32,6 @@ function updatePackageJson() {
       path.join('md2html.js'),
       path.join('src', 'md2html.js'),
       path.join('src', 'lib', 'md2html.js'),
-      path.join('dist', 'md2html.js'),
       path.join('node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
       path.join(parentDir, 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
       path.join(process.cwd(), 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
