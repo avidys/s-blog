@@ -56,12 +56,17 @@ function updatePackageJson() {
     
     console.log("md2html.js found at path:", md2htmlPath);
 
+    // Abbreviate path if it's in the parent directory
+    const displayPath = md2htmlPath.startsWith(parentDir) 
+      ? path.relative(parentDir, md2htmlPath)
+      : md2htmlPath;
+
     // Add or update scripts
     pkg.scripts = pkg.scripts || {};
     const isTypeScript = md2htmlPath.endsWith('.ts');
     const command = isTypeScript ? 'npx tsx' : 'node';
-    pkg.scripts.md2html = `${command} "${md2htmlPath}"`;
-    pkg.scripts.blog_update = `${command} "${md2htmlPath}"`;
+    pkg.scripts.md2html = `${command} "${displayPath}"`;
+    pkg.scripts.blog_update = `${command} "${displayPath}"`;
 
     // Make sure the paths are properly escaped for cross-platform compatibility
     if (process.platform === 'win32') {
