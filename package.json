@@ -1,6 +1,6 @@
 {
   "name": "@avidys/s-blog",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A blog component built with SvelteKit and Markdown",
   "author": "Avidys",
   "license": "GPL-3.0-only",
@@ -24,7 +24,9 @@
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
     "postinstall": "node ./dist/package-json-update.js",
-    "updatenpm": "node ./dist/update-package.js"
+    "updatenpm": "node ./dist/update-package.js",
+    "md2html": "npx tsx \"src/lib/md2html.ts\"",
+    "blog_update": "npx tsx \"src/lib/md2html.ts\""
   },
   "files": [
     "dist",

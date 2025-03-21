@@ -29,13 +29,13 @@ function updatePackageJson() {
     // Use the node_modules path to locate md2html.js
     // If not found at the primary location, check secondary locations
     const alternativePaths = [
-      path.join('md2html.js'),
-      path.join('src', 'md2html.js'),
-      path.join('src', 'lib', 'md2html.js'),
-      path.join('node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
+      path.join('.','md2html.ts'),
+      path.join('.','src', 'md2html.ts'),
+      path.join('.','src', 'lib', 'md2html.ts'),
+      path.join('.','node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
       path.join(parentDir, 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
       path.join(process.cwd(), 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
-      path.join('node_modules', 's-blog', 'dist', 'md2html.js'),
+      path.join('.','node_modules', 's-blog', 'dist', 'md2html.js'),
       path.join(parentDir, 'node_modules', 's-blog', 'dist', 'md2html.js'),
       path.join(process.cwd(), 'node_modules', 's-blog', 'dist', 'md2html.js')
     ];
@@ -58,8 +58,10 @@ function updatePackageJson() {
 
     // Add or update scripts
     pkg.scripts = pkg.scripts || {};
-    pkg.scripts.md2html = `node "${md2htmlPath}"`;
-    pkg.scripts.blog_update = `node "${md2htmlPath}"`;
+    const isTypeScript = md2htmlPath.endsWith('.ts');
+    const command = isTypeScript ? 'npx tsx' : 'node';
+    pkg.scripts.md2html = `${command} "${md2htmlPath}"`;
+    pkg.scripts.blog_update = `${command} "${md2htmlPath}"`;
 
     // Make sure the paths are properly escaped for cross-platform compatibility
     if (process.platform === 'win32') {
