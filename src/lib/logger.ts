@@ -14,6 +14,7 @@ class Logger {
     private logs: LogMessage[] = [];
 
     private constructor() {
+        // TODO: use esm-env to get the environment for better compatibility
         this.isDevelopment = import.meta.env.DEV;
     }
 

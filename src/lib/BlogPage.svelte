@@ -10,7 +10,6 @@
 -->
 
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import BlogPost from './BlogPost.svelte';
   import type { IBlogPost } from './types.ts';
@@ -24,22 +23,6 @@
   let selectedYear: string | null = null;
   let selectedAuthor: string | null = null;
   let isLoading = true;
-
-  // Add reactive statement to track store changes with more detail
-  $: {
-    const storeData = {
-      postsCount: $blogStore.posts.length,
-      categoriesCount: $blogStore.postsCategories.length,
-      yearsCount: $blogStore.postsYears.length,
-      authorsCount: $blogStore.postsAuthors.length,
-      posts: $blogStore.posts.map(p => ({ title: p.title, slug: p.slug })),
-      categories: $blogStore.postsCategories,
-      years: $blogStore.postsYears,
-      authors: $blogStore.postsAuthors
-    };
-    console.log('Store updated in BlogPage:', storeData);
-    isLoading = false;
-  }
 
   const KNOWN_ACRONYMS: { [key: string]: string } = {
     'cdm': 'CDM',
@@ -102,6 +85,7 @@
   onMount(async () => {
     console.log('BlogPage mounted, initializing store with path:', dataPath);
     await blogStore.initialize(dataPath);
+    isLoading = false;
   });
 </script>
 
@@ -243,8 +227,18 @@
 <style>
   /* Add these CSS variables at the top of the style block */
   :global(:root) {
-    --text-color: #333;
-    --text-light: #666;
+    --text-color: inherit;
+    --text-light: inherit;
+    --text-strong: inherit;
+    --background-color: inherit;
+    --card-background: inherit;
+    --border-color: inherit;
+    --button-border: inherit;
+    --button-background: inherit;
+    --primary-color: inherit;
+    --primary-color-dark: inherit;
+    --active-filter-background: inherit;
+    --active-filter-text: inherit;
   }
 
   .blog-container {
@@ -292,38 +286,46 @@
   }
 
   .post-card {
-    background: #f8f9fa;
+    background: var(--card-background);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: 2px solid #e0e4e8;
+    border: 2px solid var(--border-color);
     color: var(--text-color);
   }
 
   .sidebar-widget {
-    background: #f8f9fa;
+    background: var(--card-background);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: 2px solid #e0e4e8;
+    border: 2px solid var(--border-color);
     color: var(--text-color);
   }
 
   .sidebar-widget button {
     padding: 0.25em 0.5em;
-    border: 1px solid #ccc;
+    border: 1px solid var(--button-border);
     border-radius: 4px;
-    background-color: white;
+    background-color: var(--button-background);
+    color: var(--text-color);
     margin: 0.3rem;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar-widget button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color-dark);
   }
 
   .sidebar-widget button.selected {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
     font-weight: bold;
-    border: 1px solid #0056b3;
+    border: 1px solid var(--primary-color-dark);
   }
 
   .post-meta {
@@ -332,6 +334,12 @@
     color: var(--text-light);
     margin-bottom: 1rem;
     font-size: 0.9rem;
+  }
+
+  .post-meta .author,
+  .post-meta .date,
+  .post-meta .category {
+    color: var(--text-light);
   }
 
   .excerpt {
@@ -347,8 +355,8 @@
   }
 
   .read-more {
-    background: #007bff;
-    color: #ffffff;
+    background: var(--primary-color);
+    color: white;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -357,15 +365,15 @@
   }
 
   .read-more:hover {
-    background: #0056b3;
+    background: var(--primary-color-dark);
   }
 
   .sidebar-widget h3,
   .post-card h2 {
     margin-top: 0;
     margin-bottom: 0.75rem;
+    color: var(--text-strong);
   }
-
 
   @media (max-width: 768px) {
     .blog-layout {
@@ -450,7 +458,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #e9ecef;
+    background: var(--active-filter-background);
+    color: var(--active-filter-text);
     padding: 0.5rem;
     border-radius: 4px;
     margin: 0.5rem 0;
@@ -459,7 +468,7 @@
   .clear-filter {
     background: none;
     border: none;
-    color: #666;
+    color: var(--text-light);
     cursor: pointer;
     padding: 0 0.3rem;
     font-size: 1rem;
@@ -467,29 +476,30 @@
   }
 
   .clear-filter:hover {
-    color: #333;
+    color: var(--text-color);
   }
 
   .no-posts {
     text-align: center;
     padding: 2rem;
-    background: #f8f9fa;
+    background: var(--card-background);
     border-radius: 8px;
-    border: 2px solid #e0e4e8;
+    border: 2px solid var(--border-color);
   }
 
   .reset-filters {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
-    background: #007bff;
+    background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
   }
 
   .reset-filters:hover {
-    background: #0056b3;
+    background: var(--primary-color-dark);
   }
 
 </style>

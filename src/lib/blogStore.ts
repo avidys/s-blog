@@ -58,7 +58,7 @@ function createBlogStore() {
           authorsResponse.json()
         ]);
 
-        logger.info('Loaded data:', {
+        logger.debug('Loaded data:', {
           postsCount: Object.keys(metadata).length,
           categoriesCount: Object.keys(categories).length,
           yearsCount: Object.keys(years).length,
