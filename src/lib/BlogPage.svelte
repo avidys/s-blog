@@ -16,6 +16,7 @@
   import { blogStore } from './blogStore.js';
 
   export let dataPath = 'src/lib/data';  // Default path, can be overridden
+  export let useReadMoreButton = true;  // New prop to control interaction style
 
   let selectedPost: IBlogPost | null = null;
   let searchQuery = '';
@@ -82,6 +83,9 @@
     selectedAuthor = null;
   }
 
+  // Add a computed class based on whether a post is selected
+  $: layoutClass = selectedPost ? 'post-selected' : '';
+
   onMount(async () => {
     console.log('BlogPage mounted, initializing store with path:', dataPath);
     await blogStore.initialize(dataPath);
@@ -95,7 +99,7 @@
   {:else}
     <!-- <h1 class="blog-title">Blog</h1> -->
     
-    <div class="blog-layout">
+    <div class="blog-layout {layoutClass}">
       {#if !selectedPost}
       <aside class="blog-sidebar">
         <div class="sidebar-widget">
@@ -179,9 +183,11 @@
               selectedPost = null;
             }}
           />
-          <button class="back-button" on:click={() => selectedPost = null}>
-            ← Back to all posts
-          </button>
+          <div class="back-button-container">
+            <button class="back-button" on:click={() => selectedPost = null}>
+              ← Back to all posts
+            </button>
+          </div>
         {:else}
           {#if filteredPosts.length === 0}
             <div class="no-posts">
@@ -195,7 +201,10 @@
             </div>
           {:else}
             {#each filteredPosts as post}
-              <article class="post-card">
+              <article 
+                class="post-card {!useReadMoreButton ? 'clickable' : ''}"
+                on:click={() => !useReadMoreButton && handleReadMore(post)}
+              >
                 <h2>{post.title}</h2>
                 {#if post.subtitle}
                   <p class="subtitle">{post.subtitle}</p>
@@ -210,11 +219,13 @@
                   </span>
                 </div>
                 <p class="excerpt">{post.description}</p>
-                <div class="post-footer">
-                  <button class="read-more" on:click={() => handleReadMore(post)}>
-                    Read More
-                  </button>
-                </div>
+                {#if useReadMoreButton}
+                  <div class="post-footer">
+                    <button class="read-more" on:click={() => handleReadMore(post)}>
+                      Read More
+                    </button>
+                  </div>
+                {/if}
               </article>
             {/each}
           {/if}
@@ -225,8 +236,24 @@
 </div>
 
 <style>
-  /* Add these CSS variables at the top of the style block */
-  :global(:root) {
+  /* Remove the global root declaration */
+  /* :global(:root) {
+    --text-color: inherit;
+    --text-light: inherit;
+    --text-strong: inherit;
+    --background-color: inherit;
+    --card-background: inherit;
+    --border-color: inherit;
+    --button-border: inherit;
+    --button-background: inherit;
+    --primary-color: inherit;
+    --primary-color-dark: inherit;
+    --active-filter-background: inherit;
+    --active-filter-text: inherit;
+  } */
+
+  /* Instead, use component-scoped variables */
+  .blog-container {
     --text-color: inherit;
     --text-light: inherit;
     --text-strong: inherit;
@@ -260,15 +287,14 @@
     align-items: start;
   }
 
-  /* When post is selected, use full width and remove grid */
-  :global(.blog-layout:has(> .blog-content > .blog-post)) {
-    display: block;  /* Change from grid to block */
-    max-width: 800px;  /* Match BlogPost article max-width */
-    margin: 0 auto;  /* Center the content */
+  /* Use class-based styling instead of :has selector */
+  .blog-layout.post-selected {
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
-  /* Remove any remaining grid properties when post is selected */
-  :global(.blog-layout:has(> .blog-content > .blog-post)) .blog-content {
+  .blog-layout.post-selected .blog-content {
     grid-column: auto;
     width: 100%;
   }
@@ -345,7 +371,12 @@
   .excerpt {
     color: var(--text-color);
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;  /* Default margin when button is present */
+  }
+
+  /* Remove bottom margin when there's no button */
+  .post-card.clickable .excerpt {
+    margin-bottom: 0rem;  /* Reduced margin when card is clickable (no button) */
   }
 
   .post-footer {
@@ -499,6 +530,36 @@
   }
 
   .reset-filters:hover {
+    background: var(--primary-color-dark);
+  }
+
+  .post-card.clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .post-card.clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .back-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+
+  .back-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .back-button:hover {
     background: var(--primary-color-dark);
   }
 

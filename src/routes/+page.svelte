@@ -14,7 +14,7 @@
 <Blog />
 
 <!-- Force light theme -->
-<Blog theme="light" />
+<Blog theme="light" useReadMoreButton={false} />
 
 <!-- Force dark theme -->
 <Blog theme="dark" />

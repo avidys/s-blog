@@ -70,6 +70,7 @@
     export let theme: ThemeName | undefined = undefined;
     export let customColors: ThemeColors | null = null;
     export let dataPath: string = defDataPath;
+    export let useReadMoreButton = true;  // Add this prop
 
     // Determine if theme was provided as a prop
     const themeProvided = (theme !== undefined);
@@ -127,7 +128,7 @@
     --active-filter-background: {currentTheme.activeFilterBackground};
     --active-filter-text: {currentTheme.activeFilterText};
 ">
-    <BlogPage {dataPath} />
+    <BlogPage {dataPath} {useReadMoreButton} />
 </div>
 
 <style>
