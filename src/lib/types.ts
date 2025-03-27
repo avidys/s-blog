@@ -37,3 +37,29 @@ export interface FormData {
     source: string;
     comments: string;
   };
+
+// Add theme type definitions
+export type ThemeName = 'light' | 'dark';
+
+export interface ThemeColors {
+    textColor: string;
+    textLightColor: string;
+    textStrongColor: string;
+    backgroundColor: string;
+    cardBackgroundColor: string;
+    borderColor: string;
+    primaryColor: string;
+    primaryColorDark: string;
+    buttonBackground: string;
+    buttonBorder: string;
+    activeFilterBackground: string;
+    activeFilterText: string;
+}
+
+// Add Blog component props interface
+export interface BlogProps {
+    theme?: ThemeName;
+    customColors?: ThemeColors | null;
+    dataPath?: string;
+    useReadMoreButton?: boolean;
+}

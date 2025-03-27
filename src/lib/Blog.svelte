@@ -2,23 +2,7 @@
     import { onMount } from 'svelte';
     import BlogPage from '$lib/BlogPage.svelte';
     import { logger } from './logger.js';
-
-    interface ThemeColors {
-        textColor: string;
-        textLightColor: string;
-        textStrongColor: string;
-        backgroundColor: string;
-        cardBackgroundColor: string;
-        borderColor: string;
-        primaryColor: string;
-        primaryColorDark: string;
-        buttonBackground: string;
-        buttonBorder: string;
-        activeFilterBackground: string;
-        activeFilterText: string;
-    }
-
-    type ThemeName = 'light' | 'dark';
+    import type { ThemeName, ThemeColors } from './types.js';
 
     // Predefined themes
     const themes: Record<ThemeName, ThemeColors> = {
@@ -69,8 +53,8 @@
     }
     export let theme: ThemeName | undefined = undefined;
     export let customColors: ThemeColors | null = null;
-    export let dataPath: string = defDataPath;
-    export let useReadMoreButton = true;  // Add this prop
+    export let dataPath = 'src/lib/data';
+    export let useReadMoreButton = true;
 
     // Determine if theme was provided as a prop
     const themeProvided = (theme !== undefined);
