@@ -21,7 +21,6 @@
 <script lang="ts">
 	import type { IBlogPost } from './types.ts';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 
   export let post : IBlogPost;
   export let onAuthorClick: (author: string) => void = () => {};
@@ -112,10 +111,10 @@
       <div class="post-meta">
         <span>Posted by <button class="link-button" on:click={() => onAuthorClick(post.author)}>{post.author}</button></span>
         <span>on {post.date}</span>
-        <span>in {#each post.displayCategories as category, i}
-          <button class="link-button" on:click={() => onCategoryClick(category.toLowerCase())}>
-            {category.charAt(0).toUpperCase() + category.slice(1)}
-          </button>{#if i < post.displayCategories.length - 1}, {/if}
+        <span>in {#each (post.displayCategories ?? []) as category, i}
+          <button class="link-button" on:click={() => onCategoryClick((category as string).toLowerCase())}>
+            {(category as string).charAt(0).toUpperCase() + (category as string).slice(1)}
+          </button>{#if i < (post.displayCategories ?? []).length - 1}, {/if}
         {/each}</span>
       </div>
     </header>

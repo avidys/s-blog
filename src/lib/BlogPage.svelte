@@ -11,15 +11,35 @@
 
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
   import BlogPost from './BlogPost.svelte';
   import type { IBlogPost } from './types.ts';
   import { blogStore } from './blogStore.js';
+
+  export let dataPath = 'src/lib/data';  // Default path, can be overridden
 
   let selectedPost: IBlogPost | null = null;
   let searchQuery = '';
   let selectedCategories: string[] = [];
   let selectedYear: string | null = null;
   let selectedAuthor: string | null = null;
+  let isLoading = true;
+
+  // Add reactive statement to track store changes with more detail
+  $: {
+    const storeData = {
+      postsCount: $blogStore.posts.length,
+      categoriesCount: $blogStore.postsCategories.length,
+      yearsCount: $blogStore.postsYears.length,
+      authorsCount: $blogStore.postsAuthors.length,
+      posts: $blogStore.posts.map(p => ({ title: p.title, slug: p.slug })),
+      categories: $blogStore.postsCategories,
+      years: $blogStore.postsYears,
+      authors: $blogStore.postsAuthors
+    };
+    console.log('Store updated in BlogPage:', storeData);
+    isLoading = false;
+  }
 
   const KNOWN_ACRONYMS: { [key: string]: string } = {
     'cdm': 'CDM',
@@ -36,6 +56,7 @@
 
   // Update the filteredPosts reactive statement to include search
   $: filteredPosts = $blogStore.posts.filter(post => {
+    if (!post) return false;
     const matchesSearch = !searchQuery || 
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (post.description ?? '').toLowerCase().includes(searchQuery.toLowerCase());
@@ -77,140 +98,155 @@
   $: if (selectedCategories.length > 0 || selectedYear) {
     selectedAuthor = null;
   }
+
+  onMount(async () => {
+    console.log('BlogPage mounted, initializing store with path:', dataPath);
+    await blogStore.initialize(dataPath);
+  });
 </script>
 
 <div class="blog-container">
-  <!-- <h1 class="blog-title">Blog</h1> -->
-  
-  <div class="blog-layout">
-    {#if !selectedPost}
-    <aside class="blog-sidebar">
-      <div class="sidebar-widget">
-        <h3>Search</h3>
-        <form class="search-form" on:submit={handleSearch}>
-          <div class="search-container">
-            <input 
-              type="search" 
-              bind:value={searchQuery}
-              placeholder="Search posts..." 
-              aria-label="Search blog posts"
-            >
-            {#if searchQuery}
-              <button type="button" class="clear-search" on:click={() => searchQuery = ''}>
-                ×
-              </button>
-            {/if}
-          </div>
-        </form>
-      </div>
-
-      {#if selectedAuthor}
+  {#if isLoading}
+    <div class="loading">Loading blog posts...</div>
+  {:else}
+    <!-- <h1 class="blog-title">Blog</h1> -->
+    
+    <div class="blog-layout">
+      {#if !selectedPost}
+      <aside class="blog-sidebar">
         <div class="sidebar-widget">
-          <h3>Selected Author</h3>
-          <div class="active-filter">
-            {selectedAuthor}
-            <button class="clear-filter" on:click={() => selectedAuthor = null}>×</button>
-          </div>
-        </div>
-      {/if}
-
-      <div class="sidebar-widget">
-        <h3>Years</h3>
-        <button 
-          class:selected={!selectedYear}
-          on:click={() => handleYearSelect(selectedYear ?? '')}
-        >
-          All
-        </button>
-        {#each $blogStore.postsYears as year}
-          <button 
-            class:selected={selectedYear === year}
-            on:click={() => handleYearSelect(year)}
-          >
-            {year}
-          </button>
-        {/each}
-      </div>
-
-      <div class="sidebar-widget">
-        <h3>Categories</h3>
-        <button 
-          class:selected={selectedCategories.length === 0}
-          on:click={() => selectedCategories = []}
-        >
-          All
-        </button>
-        {#each $blogStore.postsCategories as category}
-          <button 
-            class:selected={selectedCategories.includes(category.toLowerCase())}
-            on:click={() => handleCategorySelect(category.toLowerCase())}
-          >
-            {KNOWN_ACRONYMS[category] ?? 
-              (category.charAt(0).toUpperCase() + category.toLowerCase().slice(1))}
-          </button>
-        {/each}
-      </div>
-    </aside>
-    {/if}
-
-    <main class="blog-content">
-      {#if selectedPost}
-        <BlogPost 
-          post={selectedPost} 
-          onAuthorClick={(author) => {
-            selectedAuthor = author;
-            selectedPost = null;
-          }}
-          onCategoryClick={(category) => {
-            selectedCategories = [category];
-            selectedPost = null;
-          }}
-        />
-        <button class="back-button" on:click={() => selectedPost = null}>
-          ← Back to all posts
-        </button>
-      {:else}
-        {#if filteredPosts.length === 0}
-          <div class="no-posts">
-            <p>No posts found matching your criteria</p>
-            <button class="reset-filters" on:click={() => {
-              searchQuery = '';
-              selectedCategories = [];
-              selectedYear = null;
-              selectedAuthor = null;
-            }}>Reset all filters</button>
-          </div>
-        {:else}
-          {#each filteredPosts as post}
-            <article class="post-card">
-              <h2>{post.title}</h2>
-              {#if post.subtitle}
-                <p class="subtitle">{post.subtitle}</p>
-              {/if}
-              <div class="post-meta">
-                <span class="author">By {post.author}</span>
-                <span class="date">{post.date}</span>
-                <span class="category">
-                  {(post.displayCategories ?? []).map(cat => 
-                    cat.charAt(0).toUpperCase() + cat.slice(1)
-                  ).join(', ')}
-                </span>
-              </div>
-              <p class="excerpt">{post.description}</p>
-              <div class="post-footer">
-                <button class="read-more" on:click={() => handleReadMore(post)}>
-                  Read More
+          <h3>Search</h3>
+          <form class="search-form" on:submit={handleSearch}>
+            <div class="search-container">
+              <input 
+                type="search" 
+                bind:value={searchQuery}
+                placeholder="Search posts..." 
+                aria-label="Search blog posts"
+              >
+              {#if searchQuery}
+                <button type="button" class="clear-search" on:click={() => searchQuery = ''}>
+                  ×
                 </button>
-              </div>
-            </article>
-          {/each}
+              {/if}
+            </div>
+          </form>
+        </div>
+
+        {#if selectedAuthor}
+          <div class="sidebar-widget">
+            <h3>Selected Author</h3>
+            <div class="active-filter">
+              {selectedAuthor}
+              <button class="clear-filter" on:click={() => selectedAuthor = null}>×</button>
+            </div>
+          </div>
         {/if}
+
+        <div class="sidebar-widget">
+          <h3>Years</h3>
+          <button 
+            class:selected={!selectedYear}
+            on:click={() => handleYearSelect(selectedYear ?? '')}
+          >
+            All
+          </button>
+          {#each $blogStore.postsYears as year}
+            <button 
+              class:selected={selectedYear === year}
+              on:click={() => handleYearSelect(year)}
+            >
+              {year}
+            </button>
+          {/each}
+        </div>
+
+        <div class="sidebar-widget">
+          <h3>Categories</h3>
+          <button 
+            class:selected={selectedCategories.length === 0}
+            on:click={() => selectedCategories = []}
+          >
+            All
+          </button>
+          {#each $blogStore.postsCategories as category}
+            <button 
+              class:selected={selectedCategories.includes(category.toLowerCase())}
+              on:click={() => handleCategorySelect(category.toLowerCase())}
+            >
+              {KNOWN_ACRONYMS[category] ?? 
+                (category.charAt(0).toUpperCase() + category.toLowerCase().slice(1))}
+            </button>
+          {/each}
+        </div>
+      </aside>
       {/if}
-    </main>
-  </div>
+
+      <main class="blog-content">
+        {#if selectedPost}
+          <BlogPost 
+            post={selectedPost} 
+            onAuthorClick={(author) => {
+              selectedAuthor = author;
+              selectedPost = null;
+            }}
+            onCategoryClick={(category) => {
+              selectedCategories = [category];
+              selectedPost = null;
+            }}
+          />
+          <button class="back-button" on:click={() => selectedPost = null}>
+            ← Back to all posts
+          </button>
+        {:else}
+          {#if filteredPosts.length === 0}
+            <div class="no-posts">
+              <p>No posts found matching your criteria</p>
+              <button class="reset-filters" on:click={() => {
+                searchQuery = '';
+                selectedCategories = [];
+                selectedYear = null;
+                selectedAuthor = null;
+              }}>Reset all filters</button>
+            </div>
+          {:else}
+            {#each filteredPosts as post}
+              <article class="post-card">
+                <h2>{post.title}</h2>
+                {#if post.subtitle}
+                  <p class="subtitle">{post.subtitle}</p>
+                {/if}
+                <div class="post-meta">
+                  <span class="author">By {post.author}</span>
+                  <span class="date">{post.date}</span>
+                  <span class="category">
+                    {(post.displayCategories ?? []).map(cat => 
+                      cat.charAt(0).toUpperCase() + cat.slice(1)
+                    ).join(', ')}
+                  </span>
+                </div>
+                <p class="excerpt">{post.description}</p>
+                <div class="post-footer">
+                  <button class="read-more" on:click={() => handleReadMore(post)}>
+                    Read More
+                  </button>
+                </div>
+              </article>
+            {/each}
+          {/if}
+        {/if}
+      </main>
+    </div>
+  {/if}
 </div>
 
 <style>
+  /* Add these CSS variables at the top of the style block */
+  :global(:root) {
+    --text-color: #333;
+    --text-light: #666;
+  }
+
   .blog-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -262,6 +298,7 @@
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 2px solid #e0e4e8;
+    color: var(--text-color);
   }
 
   .sidebar-widget {
@@ -271,6 +308,7 @@
     margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 2px solid #e0e4e8;
+    color: var(--text-color);
   }
 
   .sidebar-widget button {
