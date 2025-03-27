@@ -1,6 +1,6 @@
 ---
 title: Welcome to my blog
-date: '2025-01-26'
+date: '2020-01-26'
 description: Welcome to my new blog! This is a sample post to get you started.
 author: Anonymous
 categories: Uncategorized

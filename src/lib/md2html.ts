@@ -189,4 +189,4 @@ export function markdownMetadataPlugin() {
 	  }
 	};
 }  
-md2html()
+

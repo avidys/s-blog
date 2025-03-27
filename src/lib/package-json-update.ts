@@ -3,6 +3,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import path from 'path';
 
+const SCRIPT = 'md2html-cli';
+
 /**
  * Script to update package.json with md2html build command
  * 
@@ -29,15 +31,15 @@ function updatePackageJson() {
     // Use the node_modules path to locate md2html.js
     // If not found at the primary location, check secondary locations
     const alternativePaths = [
-      path.join('.','md2html.ts'),
-      path.join('.','src', 'md2html.ts'),
-      path.join('.','src', 'lib', 'md2html.ts'),
-      path.join('.','node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
-      path.join(parentDir, 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
-      path.join(process.cwd(), 'node_modules', '@avidys', 's-blog', 'dist', 'md2html.js'),
-      path.join('.','node_modules', 's-blog', 'dist', 'md2html.js'),
-      path.join(parentDir, 'node_modules', 's-blog', 'dist', 'md2html.js'),
-      path.join(process.cwd(), 'node_modules', 's-blog', 'dist', 'md2html.js')
+      path.join('.',`${SCRIPT}.ts`),
+      path.join('.','src', `${SCRIPT}.ts`),
+      path.join('.','src', 'lib', `${SCRIPT}.ts`),
+      path.join('.','node_modules', '@avidys', 's-blog', 'dist', `${SCRIPT}.js`),
+      path.join(parentDir, 'node_modules', '@avidys', 's-blog', 'dist', `${SCRIPT}.js`),
+      path.join(process.cwd(), 'node_modules', '@avidys', 's-blog', 'dist', `${SCRIPT}.js`),
+      path.join('.','node_modules', 's-blog', 'dist', `${SCRIPT}.js`),
+      path.join(parentDir, 'node_modules', 's-blog', 'dist', `${SCRIPT}.js`),
+      path.join(process.cwd(), 'node_modules', 's-blog', 'dist', `${SCRIPT}.js`)
     ];
 
     let md2htmlPath = '';
@@ -49,12 +51,12 @@ function updatePackageJson() {
     }
     
     if (!existsSync(md2htmlPath)) {
-      console.error("ERROR: md2html.js not found. Please ensure s-blog is properly installed.");
+      console.error(`ERROR: ${SCRIPT} not found. Please ensure s-blog is properly installed.`);
       console.error("Tried looking at paths:", alternativePaths);
       return;
     }
     
-    console.log("md2html.js found at path:", md2htmlPath);
+    console.log(`${SCRIPT} found at path:`, md2htmlPath);
 
     // Abbreviate path if it's in the parent directory
     const displayPath = md2htmlPath.startsWith(parentDir) 
