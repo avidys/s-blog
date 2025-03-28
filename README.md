@@ -70,23 +70,47 @@ Example:
 
 ```svelte
 <Blog customColors={{
-  textColor: '#2c3e50',
-  textLightColor: '#7f8c8d',
-  textStrongColor: '#2c3e50',
-  backgroundColor: '#ecf0f1',
-  cardBackgroundColor: '#ffffff',
+  textBodyColor: '#222222',
+  textSubtitleColor: '#1c1c1c',
+  textTitleColor: '#111111',
+  backgroundColor: '#123456',
+  cardBackgroundColor: '#765432',
   borderColor: '#bdc3c7',
-  primaryColor: '#3498db',
-  primaryColorDark: '#2980b9',
-  buttonBackground: '#ffffff',
-  buttonBorder: '#bdc3c7',
+  buttonBackgroundColor: '#3498db',
+  buttonBorderColor: '#2980b9',
+  buttonDisabledBackgroundColor: '#ffffff',
+  buttonDisabledBorderColor: '#bdc3c7',
   activeFilterBackground: '#bdc3c7',
-  activeFilterText: '#2c3e50'
+  activeFilterText: '#2c3e50',
+  linkColor: '#3498db',
+  linkHoverColor: '#2980b9'
 }} dataPath='/src/posts' />
 ```
 
-## Features
+## Features 
 
+- Reset filter by calling function resetSelections
+- 
+```svelte
+<script>
+  import { Blog } from '@avidys/s-blog';
+  import type { BlogPageInstance } from '@avidys/s-blog/types.ts';
+
+  let blogPage: BlogPageInstance;
+
+  function handleReset() {
+    if (blogPage) blogPage.resetSelections();
+  }
+</script>
+  
+<Blog bind:blogPage={blogPage} />
+
+<div class="reset-container">
+    <button class="reset-button" on:click={handleReset}>
+        Reset Blog Selections
+    </button>
+</div>
+```
 
 ## Build Process
 

@@ -42,18 +42,20 @@ export interface FormData {
 export type ThemeName = 'light' | 'dark';
 
 export interface ThemeColors {
-    textColor: string;
-    textLightColor: string;
-    textStrongColor: string;
+    textBodyColor: string;
+    textSubtitleColor: string;
+    textTitleColor: string;
     backgroundColor: string;
     cardBackgroundColor: string;
     borderColor: string;
-    primaryColor: string;
-    primaryColorDark: string;
-    buttonBackground: string;
-    buttonBorder: string;
+    buttonBackgroundColor: string;
+    buttonBorderColor: string;
+    buttonDisabledBackgroundColor: string;
+    buttonDisabledBorderColor: string;
     activeFilterBackground: string;
     activeFilterText: string;
+    linkColor: string;
+    linkHoverColor: string;
 }
 
 // Add Blog component props interface
@@ -62,4 +64,8 @@ export interface BlogProps {
     customColors?: ThemeColors | null;
     dataPath?: string;
     useReadMoreButton?: boolean;
+}
+
+export interface BlogPageInstance {
+  resetSelections: () => void;
 }

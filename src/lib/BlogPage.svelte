@@ -18,6 +18,15 @@
   export let dataPath = 'src/lib/data';  // Default path, can be overridden
   export let useReadMoreButton = true;  // New prop to control interaction style
 
+  // Add method to reset all selections
+  export function resetSelections() {
+    selectedPost = null;
+    searchQuery = '';
+    selectedCategories = [];
+    selectedYear = null;
+    selectedAuthor = null;
+  }
+
   let selectedPost: IBlogPost | null = null;
   let searchQuery = '';
   let selectedCategories: string[] = [];
@@ -204,6 +213,9 @@
               <article 
                 class="post-card {!useReadMoreButton ? 'clickable' : ''}"
                 on:click={() => !useReadMoreButton && handleReadMore(post)}
+                on:keydown={(e) => !useReadMoreButton && e.key === 'Enter' && handleReadMore(post)}
+                role="button"
+                tabindex="0"
               >
                 <h2>{post.title}</h2>
                 {#if post.subtitle}
@@ -236,36 +248,23 @@
 </div>
 
 <style>
-  /* Remove the global root declaration */
-  /* :global(:root) {
-    --text-color: inherit;
-    --text-light: inherit;
-    --text-strong: inherit;
-    --background-color: inherit;
-    --card-background: inherit;
-    --border-color: inherit;
-    --button-border: inherit;
-    --button-background: inherit;
-    --primary-color: inherit;
-    --primary-color-dark: inherit;
-    --active-filter-background: inherit;
-    --active-filter-text: inherit;
-  } */
-
+ 
   /* Instead, use component-scoped variables */
   .blog-container {
-    --text-color: inherit;
-    --text-light: inherit;
-    --text-strong: inherit;
+    --text-body-color: inherit;
+    --text-subtitle-color: inherit;
+    --text-title-color: inherit;
     --background-color: inherit;
-    --card-background: inherit;
+    --card-background: inherit;  /* This controls the background of boxes */
     --border-color: inherit;
-    --button-border: inherit;
-    --button-background: inherit;
-    --primary-color: inherit;
-    --primary-color-dark: inherit;
+    --button-disabled-background-color: inherit;
+    --button-disabled-border-color: inherit;
+    --button-background-color: inherit;
+    --button-border-color: inherit;
     --active-filter-background: inherit;
     --active-filter-text: inherit;
+    --link-color: inherit;
+    --link-hover-color: inherit;
   }
 
   .blog-container {
@@ -318,7 +317,7 @@
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 2px solid var(--border-color);
-    color: var(--text-color);
+    color: var(--text-body-color);
   }
 
   .sidebar-widget {
@@ -328,36 +327,36 @@
     margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 2px solid var(--border-color);
-    color: var(--text-color);
+    color: var(--text-body-color);
   }
 
   .sidebar-widget button {
     padding: 0.25em 0.5em;
-    border: 1px solid var(--button-border);
+    border: 1px solid var(--button-disabled-border-color);
     border-radius: 4px;
-    background-color: var(--button-background);
-    color: var(--text-color);
+    background-color: var(--button-disabled-background-color);
+    color: var(--text-body-color);
     margin: 0.3rem;
     transition: all 0.2s ease;
   }
 
   .sidebar-widget button:hover {
-    background-color: var(--primary-color);
+    background-color: var(--button-background-color);
     color: white;
-    border-color: var(--primary-color-dark);
+    border-color: var(--button-border-color);
   }
 
   .sidebar-widget button.selected {
-    background-color: var(--primary-color);
+    background-color: var(--button-background-color);
     color: white;
     font-weight: bold;
-    border: 1px solid var(--primary-color-dark);
+    border: 1px solid var(--button-border-color);
   }
 
   .post-meta {
     display: flex;
     gap: 1rem;
-    color: var(--text-light);
+    color: var(--text-subtitle-color);
     margin-bottom: 1rem;
     font-size: 0.9rem;
   }
@@ -365,11 +364,11 @@
   .post-meta .author,
   .post-meta .date,
   .post-meta .category {
-    color: var(--text-light);
+    color: var(--text-subtitle-color);
   }
 
   .excerpt {
-    color: var(--text-color);
+    color: var(--text-body-color);
     line-height: 1.6;
     margin-bottom: 1.5rem;  /* Default margin when button is present */
   }
@@ -386,7 +385,7 @@
   }
 
   .read-more {
-    background: var(--primary-color);
+    background: var(--button-background-color);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -396,14 +395,14 @@
   }
 
   .read-more:hover {
-    background: var(--primary-color-dark);
+    background: var(--button-border-color);
   }
 
   .sidebar-widget h3,
   .post-card h2 {
     margin-top: 0;
     margin-bottom: 0.75rem;
-    color: var(--text-strong);
+    color: var(--text-title-color);
   }
 
   @media (max-width: 768px) {
@@ -479,7 +478,7 @@
   }
 
   .subtitle {
-    color: var(--text-light);
+    color: var(--text-subtitle-color);
     font-size: 1.1rem;
     margin: -0.5rem 0 1rem;
     font-style: italic;
@@ -499,7 +498,7 @@
   .clear-filter {
     background: none;
     border: none;
-    color: var(--text-light);
+    color: var(--text-subtitle-color);
     cursor: pointer;
     padding: 0 0.3rem;
     font-size: 1rem;
@@ -507,7 +506,7 @@
   }
 
   .clear-filter:hover {
-    color: var(--text-color);
+    color: var(--text-body-color);
   }
 
   .no-posts {
@@ -521,7 +520,7 @@
   .reset-filters {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
-    background: var(--primary-color);
+    background: var(--button-background-color);
     color: white;
     border: none;
     border-radius: 4px;
@@ -530,7 +529,7 @@
   }
 
   .reset-filters:hover {
-    background: var(--primary-color-dark);
+    background: var(--button-border-color);
   }
 
   .post-card.clickable {
@@ -550,7 +549,7 @@
   }
 
   .back-button {
-    background: var(--primary-color);
+    background: var(--button-background-color);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -560,7 +559,21 @@
   }
 
   .back-button:hover {
-    background: var(--primary-color-dark);
+    background: var(--button-border-color);
+  }
+
+  .link-button {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .link-button:hover {
+    color: var(--link-hover-color);
   }
 
 </style>

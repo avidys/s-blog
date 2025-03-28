@@ -114,7 +114,7 @@
         <span>in {#each (post.displayCategories ?? []) as category, i}
           <button class="link-button" on:click={() => onCategoryClick((category as string).toLowerCase())}>
             {(category as string).charAt(0).toUpperCase() + (category as string).slice(1)}
-          </button>{#if i < (post.displayCategories ?? []).length - 1}, {/if}
+          </button>{#if i < (post.displayCategories ?? []).length - 1}<span class="category-separator">, </span>{/if}
         {/each}</span>
       </div>
     </header>
@@ -137,6 +137,7 @@
 
   .blog-post {
     width: 100%;  /* Use full width of the article container */
+    color: var(--text-body-color);
   }
 
   .container {
@@ -152,12 +153,12 @@
   h1 {
     font-size: 2.5rem;
     margin: 0 0 1rem;
-    color: var(--heading-color);
+    color: var(--text-title-color);
   }
 
   .subtitle {
     font-size: 1.5rem;
-    color: var(--text-light);
+    color: var(--text-subtitle-color);
     margin: 0 0 1.5rem;
     font-weight: normal;
   }
@@ -166,7 +167,7 @@
     display: flex;
     gap: 1rem;
     justify-content: center;
-    color: var(--text-light);
+    color: var(--text-subtitle-color);
     font-size: 0.9rem;
   }
 
@@ -189,7 +190,7 @@
   .link-button {
     background: none;
     border: none;
-    color: var(--primary-color);
+    color: var(--link-color);
     padding: 0;
     font: inherit;
     cursor: pointer;
@@ -197,6 +198,14 @@
   }
 
   .link-button:hover {
-    color: var(--primary-color-dark);
+    color: var(--link-hover-color);
+  }
+
+  .category-separator {
+    margin: 0 0.2rem 0 0;  /* Add some space around the comma */
+  }
+
+  .link-button {
+    display: inline-block;  /* Ensure proper spacing */
   }
 </style>

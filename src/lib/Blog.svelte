@@ -2,37 +2,41 @@
     import { onMount } from 'svelte';
     import BlogPage from '$lib/BlogPage.svelte';
     import { logger } from './logger.js';
-    import type { ThemeName, ThemeColors } from './types.js';
+    import type { ThemeName, ThemeColors, BlogPageInstance } from './types.ts';
 
     // Predefined themes
     const themes: Record<ThemeName, ThemeColors> = {
         light: {
-            textColor: '#333333',
-            textLightColor: '#666666',
-            textStrongColor: '#1a1a1a',
+            textBodyColor: '#333333',
+            textSubtitleColor: '#666666',
+            textTitleColor: '#1a1a1a',
             backgroundColor: '#f8f9fa',
             cardBackgroundColor: '#ffffff',
             borderColor: '#e0e4e8',
-            primaryColor: '#007bff',
-            primaryColorDark: '#0056b3',
-            buttonBackground: '#ffffff',
-            buttonBorder: '#cccccc',
+            buttonBackgroundColor: '#007bff',
+            buttonBorderColor: '#0056b3',
+            buttonDisabledBackgroundColor: '#ffffff',
+            buttonDisabledBorderColor: '#cccccc',
             activeFilterBackground: '#e9ecef',
-            activeFilterText: '#333333'
+            activeFilterText: '#333333',
+            linkColor: '#007bff',
+            linkHoverColor: '#0056b3'
         },
         dark: {
-            textColor: '#e0e0e0',
-            textLightColor: '#a0a0a0',
-            textStrongColor: '#ffffff',
+            textBodyColor: '#e0e0e0',
+            textSubtitleColor: '#a0a0a0',
+            textTitleColor: '#ffffff',
             backgroundColor: '#1a1a1a',
             cardBackgroundColor: '#2d2d2d',
             borderColor: '#404040',
-            primaryColor: '#4dabf7',
-            primaryColorDark: '#339af0',
-            buttonBackground: '#2d2d2d',
-            buttonBorder: '#404040',
+            buttonBackgroundColor: '#4dabf7',
+            buttonBorderColor: '#339af0',
+            buttonDisabledBackgroundColor: '#2d2d2d',
+            buttonDisabledBorderColor: '#404040',
             activeFilterBackground: '#404040',
-            activeFilterText: '#e0e0e0'
+            activeFilterText: '#e0e0e0',
+            linkColor: '#4dabf7',
+            linkHoverColor: '#339af0'
         }
     };
 
@@ -55,6 +59,7 @@
     export let customColors: ThemeColors | null = null;
     export let dataPath = 'src/lib/data';
     export let useReadMoreButton = true;
+    export let blogPage: BlogPageInstance | undefined = undefined;
 
     // Determine if theme was provided as a prop
     const themeProvided = (theme !== undefined);
@@ -99,20 +104,22 @@
 </svelte:head>
 
 <div class="blog-wrapper" style="
-    --text-color: {currentTheme.textColor};
-    --text-light: {currentTheme.textLightColor};
-    --text-strong: {currentTheme.textStrongColor};
+    --text-body-color: {currentTheme.textBodyColor};
+    --text-subtitle-color: {currentTheme.textSubtitleColor};
+    --text-title-color: {currentTheme.textTitleColor};
     --background-color: {currentTheme.backgroundColor};
     --card-background: {currentTheme.cardBackgroundColor};
     --border-color: {currentTheme.borderColor};
-    --primary-color: {currentTheme.primaryColor};
-    --primary-color-dark: {currentTheme.primaryColorDark};
-    --button-background: {currentTheme.buttonBackground};
-    --button-border: {currentTheme.buttonBorder};
+    --button-background-color: {currentTheme.buttonBackgroundColor};
+    --button-border-color: {currentTheme.buttonBorderColor};
+    --button-disabled-background-color: {currentTheme.buttonDisabledBackgroundColor};
+    --button-disabled-border-color: {currentTheme.buttonDisabledBorderColor};
     --active-filter-background: {currentTheme.activeFilterBackground};
     --active-filter-text: {currentTheme.activeFilterText};
+    --link-color: {currentTheme.linkColor};
+    --link-hover-color: {currentTheme.linkHoverColor};
 ">
-    <BlogPage {dataPath} {useReadMoreButton} />
+    <BlogPage bind:this={blogPage} {dataPath} {useReadMoreButton} />
 </div>
 
 <style>
@@ -120,6 +127,6 @@
         background-color: var(--background-color);
         min-height: 100vh;
         transition: background-color 0.3s ease, color 0.3s ease;
-        color: var(--text-color);
+        color: var(--text-body-color);
     }
 </style>
