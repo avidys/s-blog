@@ -130,7 +130,7 @@
 
 <style>
   article {
-    max-width: 800px;
+    max-width: 80%;
     margin: 0 auto;  /* Center the article */
     padding: 0 2rem;  /* Comfortable reading padding */
   }

@@ -265,9 +265,6 @@
     --active-filter-text: inherit;
     --link-color: inherit;
     --link-hover-color: inherit;
-  }
-
-  .blog-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
@@ -284,12 +281,16 @@
     grid-template-columns: 240px 1fr;
     gap: 2.5rem;
     align-items: start;
+    max-width: 900px;
+    width:100%;
+    margin: 0 auto;
   }
 
   /* Use class-based styling instead of :has selector */
   .blog-layout.post-selected {
     display: block;
-    max-width: 800px;
+    max-width: 900px;
+    width:100%;
     margin: 0 auto;
   }
 
