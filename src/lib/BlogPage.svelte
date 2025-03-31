@@ -12,11 +12,19 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import BlogPost from './BlogPost.svelte';
-  import type { IBlogPost } from './types.ts';
+  import type { IBlogPost, BlogPageProps } from './types.ts';
   import { blogStore } from './blogStore.js';
 
-  export let dataPath = 'src/lib/data';  // Default path, can be overridden
-  export let useReadMoreButton = true;  // New prop to control interaction style
+  // Add new props with defaults
+  export let dataPath: BlogPageProps['dataPath'] = 'src/lib/data';
+  export let showReadMoreButton: BlogPageProps['showReadMoreButton'] = true;
+  export let numberOfPosts: BlogPageProps['numberOfPosts'] = Infinity;
+  export let showSearch: BlogPageProps['showSearch'] = true;
+  export let showYears: BlogPageProps['showYears'] = true;
+  export let showCategories: BlogPageProps['showCategories'] = true;
+  export let showAuthor: BlogPageProps['showAuthor'] = true;
+  export let showDate: BlogPageProps['showDate'] = true;
+  export let showDescription: BlogPageProps['showDescription'] = true;
 
   // Add method to reset all selections
   export function resetSelections() {
@@ -48,22 +56,24 @@
   }
 
   // Update the filteredPosts reactive statement to include search
-  $: filteredPosts = $blogStore.posts.filter(post => {
-    if (!post) return false;
-    const matchesSearch = !searchQuery || 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (post.description ?? '').toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategories.length === 0 || 
-      (Array.isArray(post.categories) ? post.categories : (post.categories ? [post.categories] : [])).some(cat => 
-        cat && selectedCategories.includes(cat.toLowerCase())
-      );
-    const matchesYear = !selectedYear || 
-      new Date(post.date).getFullYear().toString() === selectedYear;
-    const matchesAuthor = !selectedAuthor || 
-      post.author === selectedAuthor;
-    
-    return matchesSearch && matchesCategory && matchesYear && matchesAuthor;
-  });
+  $: filteredPosts = $blogStore.posts
+    .filter(post => {
+      if (!post) return false;
+      const matchesSearch = !searchQuery || 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (post.description ?? '').toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategories.length === 0 || 
+        (Array.isArray(post.categories) ? post.categories : (post.categories ? [post.categories] : [])).some(cat => 
+          cat && selectedCategories.includes(cat.toLowerCase())
+        );
+      const matchesYear = !selectedYear || 
+        new Date(post.date).getFullYear().toString() === selectedYear;
+      const matchesAuthor = !selectedAuthor || 
+        post.author === selectedAuthor;
+      
+      return matchesSearch && matchesCategory && matchesYear && matchesAuthor;
+    })
+    .slice(0, numberOfPosts);
 
   // Get 3 most recent posts
   $: recentPosts = [...$blogStore.posts]
@@ -92,12 +102,15 @@
     selectedAuthor = null;
   }
 
-  // Add a computed class based on whether a post is selected
-  $: layoutClass = selectedPost ? 'post-selected' : '';
+  // Add a computed class based on whether a post is selected and sidebar visibility
+  $: layoutClass = `${selectedPost ? 'post-selected' : ''} ${!showSidebar ? 'no-sidebar' : ''}`;
+
+  // Add reactive variable for sidebar visibility
+  $: showSidebar = showSearch || showYears || showCategories;
 
   onMount(async () => {
     console.log('BlogPage mounted, initializing store with path:', dataPath);
-    await blogStore.initialize(dataPath);
+    await blogStore.initialize(dataPath ?? 'src/lib/data');
     isLoading = false;
   });
 </script>
@@ -109,8 +122,9 @@
     <!-- <h1 class="blog-title">Blog</h1> -->
     
     <div class="blog-layout {layoutClass}">
-      {#if !selectedPost}
+      {#if !selectedPost && showSidebar}
       <aside class="blog-sidebar">
+        {#if showSearch}
         <div class="sidebar-widget">
           <h3>Search</h3>
           <form class="search-form" on:submit={handleSearch}>
@@ -129,6 +143,7 @@
             </div>
           </form>
         </div>
+        {/if}
 
         {#if selectedAuthor}
           <div class="sidebar-widget">
@@ -140,6 +155,7 @@
           </div>
         {/if}
 
+        {#if showYears}
         <div class="sidebar-widget">
           <h3>Years</h3>
           <button 
@@ -157,7 +173,9 @@
             </button>
           {/each}
         </div>
+        {/if}
 
+        {#if showCategories}
         <div class="sidebar-widget">
           <h3>Categories</h3>
           <button 
@@ -176,6 +194,7 @@
             </button>
           {/each}
         </div>
+        {/if}
       </aside>
       {/if}
 
@@ -211,9 +230,9 @@
           {:else}
             {#each filteredPosts as post}
               <article 
-                class="post-card {!useReadMoreButton ? 'clickable' : ''}"
-                on:click={() => !useReadMoreButton && handleReadMore(post)}
-                on:keydown={(e) => !useReadMoreButton && e.key === 'Enter' && handleReadMore(post)}
+                class="post-card {!showReadMoreButton ? 'clickable' : ''}"
+                on:click={() => !showReadMoreButton && handleReadMore(post)}
+                on:keydown={(e) => !showReadMoreButton && e.key === 'Enter' && handleReadMore(post)}
                 role="button"
                 tabindex="0"
               >
@@ -222,16 +241,22 @@
                   <p class="subtitle">{post.subtitle}</p>
                 {/if}
                 <div class="post-meta">
-                  <span class="author">By {post.author}</span>
-                  <span class="date">{post.date}</span>
+                  {#if showAuthor}
+                    <span class="author">By {post.author}</span>
+                  {/if}
+                  {#if showDate}
+                    <span class="date">{post.date}</span>
+                  {/if}
                   <span class="category">
                     {(post.displayCategories ?? []).map(cat => 
                       cat.charAt(0).toUpperCase() + cat.slice(1)
                     ).join(', ')}
                   </span>
                 </div>
-                <p class="excerpt">{post.description}</p>
-                {#if useReadMoreButton}
+                {#if showDescription}
+                  <p class="excerpt">{post.description}</p>
+                {/if}
+                {#if showReadMoreButton}
                   <div class="post-footer">
                     <button class="read-more" on:click={() => handleReadMore(post)}>
                       Read More
@@ -282,7 +307,7 @@
     gap: 2.5rem;
     align-items: start;
     max-width: 900px;
-    width:100%;
+    width: 100%;
     margin: 0 auto;
   }
 
@@ -290,13 +315,22 @@
   .blog-layout.post-selected {
     display: block;
     max-width: 900px;
-    width:100%;
+    width: 100%;
     margin: 0 auto;
+  }
+
+  .blog-layout.no-sidebar {
+    grid-template-columns: 1fr;
+    max-width: 800px;
   }
 
   .blog-layout.post-selected .blog-content {
     grid-column: auto;
     width: 100%;
+  }
+
+  .blog-layout.no-sidebar .blog-content {
+    grid-column: 1;
   }
 
   .blog-sidebar {

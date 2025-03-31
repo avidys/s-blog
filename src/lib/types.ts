@@ -63,9 +63,27 @@ export interface BlogProps {
     theme?: ThemeName;
     customColors?: ThemeColors | null;
     dataPath?: string;
-    useReadMoreButton?: boolean;
+    showReadMoreButton?: boolean;
+    numberOfPosts?: number;
+    showSearch?: boolean;
+    showCategories?: boolean;
+    showAuthor?: boolean;
+    showDate?: boolean;
+    showDescription?: boolean;
 }
 
 export interface BlogPageInstance {
   resetSelections: () => void;
+}
+
+export interface BlogPageProps {
+  dataPath?: string;
+  showReadMoreButton?: boolean;
+  numberOfPosts?: number;
+  showSearch?: boolean;
+  showYears?: boolean;
+  showCategories?: boolean;
+  showAuthor?: boolean;
+  showDate?: boolean;
+  showDescription?: boolean;
 }

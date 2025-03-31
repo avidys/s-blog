@@ -58,8 +58,17 @@
     export let theme: ThemeName | undefined = undefined;
     export let customColors: ThemeColors | null = null;
     export let dataPath = 'src/lib/data';
-    export let useReadMoreButton = true;
+    export let showReadMoreButton = true;
     export let blogPage: BlogPageInstance | undefined = undefined;
+
+    // Add new props with defaults
+    export let numberOfPosts = Infinity;
+    export let showSearch = true;
+    export let showCategories = true;
+    export let showYears = true;
+    export let showAuthor = true;
+    export let showDate = true;
+    export let showDescription = true;
 
     // Determine if theme was provided as a prop
     const themeProvided = (theme !== undefined);
@@ -119,7 +128,18 @@
     --link-color: {currentTheme.linkColor};
     --link-hover-color: {currentTheme.linkHoverColor};
 ">
-    <BlogPage bind:this={blogPage} {dataPath} {useReadMoreButton} />
+    <BlogPage 
+        bind:this={blogPage} 
+        {dataPath} 
+        {showReadMoreButton}
+        {numberOfPosts}
+        {showSearch}
+        {showCategories}
+        {showYears}
+        {showAuthor}
+        {showDate}
+        {showDescription}
+    />
 </div>
 
 <style>

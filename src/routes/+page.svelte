@@ -21,10 +21,22 @@
 <Blog bind:blogPage={blogPage} />
 
 <!-- Force light theme -->
-<Blog theme="light" useReadMoreButton={false} />
+<Blog theme="light" showReadMoreButton={false} />
 
 <!-- Force dark theme -->
 <Blog theme="dark" />
+
+<Blog 
+    theme="dark"
+    showSearch={false}
+    showCategories={false}
+    showYears={false}
+    numberOfPosts={3}
+    showAuthor={false}
+    showDate={false}
+    showDescription={false}
+    showReadMoreButton={false}
+/>
 
 <!-- Custom theme -->
 <Blog customColors={{
