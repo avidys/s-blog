@@ -25,7 +25,7 @@ function createBlogStore() {
 
   return {
     subscribe,
-    initialize: async (dataPath: string, useImports = true) => {
+    initialize: async (dataPath: string, useImports = false) => {
       try {
         logger.info('Initializing blog store with path:', dataPath);
         
@@ -33,7 +33,7 @@ function createBlogStore() {
         
         if (useImports) {
           // For imports, we'll use a direct path since Vite has limitations on dynamic imports
-          const basePath = cleanPath === 'src/lib/data' ? './data' : `../${cleanPath}`;
+          const basePath = cleanPath === 'data' ? './static/data' : `../${cleanPath}`;
           
           const [metadata, categories, years, authors] = await Promise.all([
             import(`${basePath}/postsMetadata.json`),

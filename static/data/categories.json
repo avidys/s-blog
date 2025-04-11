@@ -1,0 +1,30 @@
+{
+  "sveltekit": [
+    "001"
+  ],
+  "svelte": [
+    "001",
+    "ts"
+  ],
+  "markdown": [
+    "002"
+  ],
+  "table": [
+    "002"
+  ],
+  "cdm": [
+    "003"
+  ],
+  "ai": [
+    "003"
+  ],
+  "clinical trial": [
+    "003"
+  ],
+  "typescript": [
+    "ts"
+  ],
+  "uncategorized": [
+    "welcome"
+  ]
+}

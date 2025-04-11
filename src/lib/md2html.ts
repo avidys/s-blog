@@ -29,12 +29,12 @@ interface PostMetadata {
 
 export function md2html({
   postsDir = findPostsDirectory(),
-  dataDir = path.resolve(process.cwd(), 'src/lib/data'),
   staticDir = path.resolve(process.cwd(), 'static'),
+  dataDir = path.join(staticDir, 'data'),
   htmlOutputDir = path.join(staticDir, 'posts')
 } = {}) {
 	// const postsDir = path.resolve(process.cwd(), 'src/lib/posts');
-	// const dataDir = path.resolve(process.cwd(), 'src/lib/data'); // output json
+	// const dataDir = path.resolve(process.cwd(), 'static/data'); // output json
 	// const staticDir = path.resolve(process.cwd(), 'static');
 	// const htmlOutputDir = path.join(staticDir, 'posts');
 	

@@ -1,0 +1,132 @@
+{
+  "001": {
+    "slug": "001",
+    "file": "001.md",
+    "originalPath": "/src/posts/001.md",
+    "htmlPath": "/posts/001.html",
+    "title": "Getting Started with Web Development",
+    "subtitle": "",
+    "description": "Web development is an exciting journey that combines creativity with technical skills.",
+    "author": "Anonymous",
+    "categories": [
+      "sveltekit",
+      "svelte"
+    ],
+    "displayCategories": [
+      "sveltekit",
+      "svelte"
+    ],
+    "date": "2025-4-14",
+    "updated": "2025-4-14",
+    "image": "",
+    "published": true
+  },
+  "002": {
+    "slug": "002",
+    "file": "002.md",
+    "originalPath": "/src/posts/002.md",
+    "htmlPath": "/posts/002.html",
+    "title": "Test of a Table",
+    "subtitle": "",
+    "description": "A Markdown Table.",
+    "author": "Anonymous",
+    "categories": [
+      "Markdown",
+      "Table"
+    ],
+    "displayCategories": [
+      "Markdown",
+      "Table"
+    ],
+    "date": "2023-4-16",
+    "updated": "2023-4-16",
+    "image": "",
+    "published": true
+  },
+  "003": {
+    "slug": "003",
+    "file": "003.md",
+    "originalPath": "/src/posts/003.md",
+    "htmlPath": "/posts/003.html",
+    "title": "The Importance of Cleaning Clinical Data for Accurate Trial Result",
+    "subtitle": "",
+    "description": "In this post, we explore why cleaning clinical data is important and how to do it effectively.",
+    "author": "Avidys",
+    "categories": [
+      "CDM",
+      "AI",
+      "Clinical Trial"
+    ],
+    "displayCategories": [
+      "CDM",
+      "AI",
+      "Clinical Trial"
+    ],
+    "date": "2022-07-01",
+    "updated": "2023-10-26",
+    "image": "",
+    "published": true
+  },
+  "hello-world": {
+    "slug": "hello-world",
+    "file": "hello-world.md",
+    "originalPath": "/src/posts/hello-world.md",
+    "htmlPath": "/posts/hello-world.html",
+    "title": "Welcome to my blog!",
+    "subtitle": "",
+    "description": "Welcome to my first blog post!",
+    "author": "Jean Maupas",
+    "categories": [
+      "uncategorized"
+    ],
+    "displayCategories": [
+      "Uncategorized"
+    ],
+    "date": "2025-01-26",
+    "updated": "2025-01-26",
+    "image": "",
+    "published": true
+  },
+  "ts": {
+    "slug": "ts",
+    "file": "ts.md",
+    "originalPath": "/src/posts/ts.md",
+    "htmlPath": "/posts/ts.html",
+    "title": "Typescript goodies",
+    "subtitle": "",
+    "description": "\nLet me explain the key differences between TypeScript type and interface:\n\n1. Extension/Inheritance:\n\n```ts\n// Interface can be extended\ninterface Animal {\n  name: string;\n}\ninterface Dog extends Ani...",
+    "author": "Avidys",
+    "categories": [
+      "Typescript",
+      "Svelte"
+    ],
+    "displayCategories": [
+      "Typescript",
+      "Svelte"
+    ],
+    "date": "2025-01-26",
+    "updated": "2025-01-26",
+    "image": "",
+    "published": true
+  },
+  "welcome": {
+    "slug": "welcome",
+    "file": "welcome.md",
+    "originalPath": "/src/posts/welcome.md",
+    "htmlPath": "/posts/welcome.html",
+    "title": "Welcome to my blog",
+    "subtitle": "",
+    "description": "Welcome to my new blog! This is a sample post to get you started.",
+    "author": "Anonymous",
+    "categories": [
+      "Uncategorized"
+    ],
+    "displayCategories": [
+      "Uncategorized"
+    ],
+    "date": "2020-01-26",
+    "updated": "2020-01-26",
+    "image": "",
+    "published": false
+  }
+}

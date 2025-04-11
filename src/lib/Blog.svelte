@@ -40,17 +40,18 @@
         }
     };
 
-    export let useImports = true; // Use imports instead of fetch for data loading
+    export let useImports = false; // Use imports instead of fetch for data loading
 
     // Determine the data path based on whether we're in development or production
     // and whether we're being used as a package or directly
     const isPackage = import.meta.url.includes('node_modules');
-    const defDataPath = isPackage
-        ? '/node_modules/@avidys/s-blog/src/lib/data'  // When used as a package
-        // TODO: use esm-env to get the environment for better compatibility
-        : useImports && import.meta.env.DEV 
-            ? 'src/lib/data'  // Development environment (direct usage)
-            : '/'; // Production environment (direct usage)
+    // const defDataPath = isPackage
+    //     ? '/node_modules/@avidys/s-blog/static/data'  // When used as a package
+    //     // TODO: use esm-env to get the environment for better compatibility
+    //     : useImports && import.meta.env.DEV 
+    //         ? 'src/lib/data'  // Development environment (direct usage)
+    //         : '/src/lib/data'; // Production environment 
+    const defDataPath = "data";
 
     // Theme props with defaults
     let systemTheme: ThemeName = 'light';

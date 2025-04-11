@@ -16,7 +16,7 @@
   import { blogStore } from './blogStore.js';
 
   // Add new props with defaults
-  export let dataPath: BlogPageProps['dataPath'] = 'src/lib/data';
+  export let dataPath: BlogPageProps['dataPath'] = 'data';
   export let showReadMoreButton: BlogPageProps['showReadMoreButton'] = true;
   export let numberOfPosts: BlogPageProps['numberOfPosts'] = Infinity;
   export let showSearch: BlogPageProps['showSearch'] = true;
@@ -25,7 +25,7 @@
   export let showAuthor: BlogPageProps['showAuthor'] = true;
   export let showDate: BlogPageProps['showDate'] = true;
   export let showDescription: BlogPageProps['showDescription'] = true;
-  export let useImports: BlogPageProps['useImports'] = true;
+  export let useImports: BlogPageProps['useImports'] = false;
 
   // Add method to reset all selections
   export function resetSelections() {
@@ -111,7 +111,7 @@
 
   onMount(async () => {
     console.log('BlogPage mounted, initializing store with path:', dataPath);
-    await blogStore.initialize(dataPath ?? 'src/lib/data', useImports);
+    await blogStore.initialize(dataPath ?? 'data', useImports);
     isLoading = false;
   });
 </script>
