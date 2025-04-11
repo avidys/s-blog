@@ -25,6 +25,7 @@
   export let showAuthor: BlogPageProps['showAuthor'] = true;
   export let showDate: BlogPageProps['showDate'] = true;
   export let showDescription: BlogPageProps['showDescription'] = true;
+  export let useImports: BlogPageProps['useImports'] = true;
 
   // Add method to reset all selections
   export function resetSelections() {
@@ -110,7 +111,7 @@
 
   onMount(async () => {
     console.log('BlogPage mounted, initializing store with path:', dataPath);
-    await blogStore.initialize(dataPath ?? 'src/lib/data');
+    await blogStore.initialize(dataPath ?? 'src/lib/data', useImports);
     isLoading = false;
   });
 </script>
@@ -290,7 +291,7 @@
     --active-filter-text: inherit;
     --link-color: inherit;
     --link-hover-color: inherit;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
   }
@@ -306,7 +307,7 @@
     grid-template-columns: 240px 1fr;
     gap: 2.5rem;
     align-items: start;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
   }
@@ -314,14 +315,14 @@
   /* Use class-based styling instead of :has selector */
   .blog-layout.post-selected {
     display: block;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
   }
 
   .blog-layout.no-sidebar {
     grid-template-columns: 1fr;
-    max-width: 800px;
+    max-width: 1000px;
   }
 
   .blog-layout.post-selected .blog-content {

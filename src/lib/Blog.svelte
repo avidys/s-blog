@@ -40,15 +40,17 @@
         }
     };
 
+    export let useImports = true; // Use imports instead of fetch for data loading
+
     // Determine the data path based on whether we're in development or production
     // and whether we're being used as a package or directly
     const isPackage = import.meta.url.includes('node_modules');
     const defDataPath = isPackage
         ? '/node_modules/@avidys/s-blog/src/lib/data'  // When used as a package
         // TODO: use esm-env to get the environment for better compatibility
-        : import.meta.env.DEV 
+        : useImports && import.meta.env.DEV 
             ? 'src/lib/data'  // Development environment (direct usage)
-            : '/src/lib/data'; // Production environment (direct usage)
+            : '/'; // Production environment (direct usage)
 
     // Theme props with defaults
     let systemTheme: ThemeName = 'light';
@@ -57,10 +59,10 @@
     }
     export let theme: ThemeName | undefined = undefined;
     export let customColors: ThemeColors | null = null;
-    export let dataPath = 'src/lib/data';
+    export let dataPath = defDataPath;
     export let showReadMoreButton = true;
     export let blogPage: BlogPageInstance | undefined = undefined;
-
+ 
     // Add new props with defaults
     export let numberOfPosts = Infinity;
     export let showSearch = true;
@@ -139,6 +141,7 @@
         {showAuthor}
         {showDate}
         {showDescription}
+        {useImports}
     />
 </div>
 

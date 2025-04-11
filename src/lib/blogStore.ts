@@ -25,64 +25,73 @@ function createBlogStore() {
 
   return {
     subscribe,
-    initialize: async (dataPath: string) => {
+    initialize: async (dataPath: string, useImports = true) => {
       try {
         logger.info('Initializing blog store with path:', dataPath);
         
-        // Clean the path by removing leading slash and handle package path
-        const cleanPath = dataPath.replace(/^\/+/, '');
-        const isPackage = import.meta.url.includes('node_modules');
+        const cleanPath = dataPath.replace(/^\/+|\/+$/g, '');
         
-        // Use fetch instead of dynamic imports
-        const [metadataResponse, categoriesResponse, yearsResponse, authorsResponse] = await Promise.all([
-          fetch(`/${cleanPath}/postsMetadata.json`),
-          fetch(`/${cleanPath}/categories.json`),
-          fetch(`/${cleanPath}/years.json`),
-          fetch(`/${cleanPath}/authors.json`)
-        ]);
-
-        if (!metadataResponse.ok || !categoriesResponse.ok || !yearsResponse.ok || !authorsResponse.ok) {
-          logger.error('Failed to fetch data files:', {
-            metadata: metadataResponse.status,
-            categories: categoriesResponse.status,
-            years: yearsResponse.status,
-            authors: authorsResponse.status
-          });
-          throw new Error('Failed to fetch one or more data files');
-        }
-
-        const [metadata, categories, years, authors] = await Promise.all([
-          metadataResponse.json(),
-          categoriesResponse.json(),
-          yearsResponse.json(),
-          authorsResponse.json()
-        ]);
-
-        logger.debug('Loaded data:', {
-          postsCount: Object.keys(metadata).length,
-          categoriesCount: Object.keys(categories).length,
-          yearsCount: Object.keys(years).length,
-          authorsCount: Object.keys(authors).length,
-          samplePost: Object.values(metadata)[0],
-          isPackage
-        });
-
-        // Update the store with the loaded data
-        update(state => {
-          const newState = {
+        if (useImports) {
+          // For imports, we'll use a direct path since Vite has limitations on dynamic imports
+          const basePath = cleanPath === 'src/lib/data' ? './data' : `../${cleanPath}`;
+          
+          const [metadata, categories, years, authors] = await Promise.all([
+            import(`${basePath}/postsMetadata.json`),
+            import(`${basePath}/categories.json`),
+            import(`${basePath}/years.json`),
+            import(`${basePath}/authors.json`)
+          ]);
+          
+          update(state => ({
             ...state,
             dataPath: cleanPath,
-            posts: Object.values(metadata) as IBlogPost[],
+            posts: Object.values(metadata.default),
+            postsCategories: Object.keys(categories.default),
+            postsYears: Object.keys(years.default),
+            postsAuthors: Object.keys(authors.default)
+          }));
+        } else {
+          const [metadataResponse, categoriesResponse, yearsResponse, authorsResponse] = await Promise.all([
+            fetch(`/${cleanPath}/postsMetadata.json`),
+            fetch(`/${cleanPath}/categories.json`),
+            fetch(`/${cleanPath}/years.json`),
+            fetch(`/${cleanPath}/authors.json`)
+          ]);
+
+          if (!metadataResponse.ok || !categoriesResponse.ok || !yearsResponse.ok || !authorsResponse.ok) {
+            logger.error('Failed to fetch data files:', {
+              metadata: metadataResponse.status,
+              categories: categoriesResponse.status,
+              years: yearsResponse.status,
+              authors: authorsResponse.status
+            });
+            throw new Error('Failed to fetch one or more data files');
+          }
+
+          const [metadata, categories, years, authors] = await Promise.all([
+            metadataResponse.json(),
+            categoriesResponse.json(),
+            yearsResponse.json(),
+            authorsResponse.json()
+          ]);
+
+          logger.debug('Loaded data:', {
+            postsCount: Object.keys(metadata).length,
+            categoriesCount: Object.keys(categories).length,
+            yearsCount: Object.keys(years).length,
+            authorsCount: Object.keys(authors).length,
+            samplePost: Object.values(metadata)[0],
+          });
+
+          update(state => ({
+            ...state,
+            dataPath: cleanPath,
+            posts: Object.values(metadata),
             postsCategories: Object.keys(categories),
             postsYears: Object.keys(years),
             postsAuthors: Object.keys(authors)
-          };
-          logger.debug('Updating store state:', {
-            ...newState,
-            posts: newState.posts.map(p => ({ title: p.title, slug: p.slug }))
-          });
-          return newState;
-        });
+          }));
+        }
       } catch (error) {
         logger.error('Failed to load blog data:', error);
         // Set empty arrays to prevent undefined errors

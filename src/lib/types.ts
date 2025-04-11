@@ -81,9 +81,11 @@ export interface BlogPageProps {
   showReadMoreButton?: boolean;
   numberOfPosts?: number;
   showSearch?: boolean;
-  showYears?: boolean;
   showCategories?: boolean;
+  showYears?: boolean;
   showAuthor?: boolean;
   showDate?: boolean;
+  showExcerpt?: boolean;
   showDescription?: boolean;
+  useImports?: boolean;
 }
