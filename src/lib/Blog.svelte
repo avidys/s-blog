@@ -40,8 +40,6 @@
         }
     };
 
-    export let useImports = false; // Use imports instead of fetch for data loading
-
     // Determine the data path based on whether we're in development or production
     // and whether we're being used as a package or directly
     const isPackage = import.meta.url.includes('node_modules');
@@ -133,7 +131,6 @@
 ">
     <BlogPage 
         bind:this={blogPage} 
-        {dataPath} 
         {showReadMoreButton}
         {numberOfPosts}
         {showSearch}
@@ -142,7 +139,8 @@
         {showAuthor}
         {showDate}
         {showDescription}
-        {useImports}
+        dataPath={defDataPath}
+        useImports={false}
     />
 </div>
 

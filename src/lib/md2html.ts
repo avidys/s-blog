@@ -109,7 +109,7 @@ export function md2html({
 		postsMetadata[slug] = metadata; //.push(metadata);
 		
 		// Aggregate by categories (assuming data.categories is an array).
-		if (Array.isArray(data.categories)) {
+		if (Array.isArray(data.categories) && metadata.published) {
 			data.categories.forEach((cat) => {
 				const lowerCat = cat.toLowerCase();
 				if (!categoriesMap[lowerCat]) categoriesMap[lowerCat] = [];
@@ -118,14 +118,14 @@ export function md2html({
 		}
 		
 		// Aggregate by year, assuming data.date is a date string.
-		if (data.date) {
+		if (data.date && metadata.published) {
 			const year = new Date(data.date).getFullYear().toString();
 			if (!yearsMap[year]) yearsMap[year] = [];
 			yearsMap[year].push(slug); // metadata);
 		}
 		
 		// Aggregate by author
-		if (metadata.author) {
+		if (metadata.author && metadata.published) {
 			const author = metadata.author;
 			if (!authorsMap[author]) authorsMap[author] = [];
 			authorsMap[author].push(slug);
