@@ -65,7 +65,6 @@ export function md2html({
 	  
 		// Parse frontmatter and content.
 		const { data, content } = matter(fileContent);
-		
 		// Convert markdown content to HTML using the synchronous method with explicit casting
 		const html = marked.parse(content) as string;
 		
@@ -74,6 +73,15 @@ export function md2html({
 		const htmlFileName = `${baseName}.html`;
 		const htmlFilePath = path.join(htmlOutputDir, htmlFileName);
 		
+		if (!data || data == undefined || Object.keys(data).length === 0) {
+			console.log(`No yaml frontmatter found for ${file}`);
+			return;
+		}
+
+		if (data.published == undefined) {
+			console.log(`No published flag found for ${file}`);
+			return;
+		}
 		// Write the HTML file.
 		fs.writeFileSync(htmlFilePath, html);
 		console.log(`Generated HTML for ${file} at /posts/${htmlFileName}`);
@@ -102,7 +110,7 @@ export function md2html({
 			date: data.date || new Date(),
 			updated: data.updated || data.date,
 			image: data.image || '',
-			published: data.published !== false,  // default to true if not specified	
+			published: data.published !== false, 	
 			...data
 		} as PostMetadata;
 
