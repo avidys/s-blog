@@ -16,6 +16,7 @@
 
 <h1>Blog Component</h1>
 <p>Posts formated in as .md in /src/posts</p>
+<p><a href="/blog">SEO Blog page →</a></p>
 
 <!-- Use system theme (default) -->
 <Blog bind:blogPage={blogPage} />

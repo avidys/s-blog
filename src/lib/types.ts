@@ -70,6 +70,7 @@ export interface BlogProps {
     showAuthor?: boolean;
     showDate?: boolean;
     showDescription?: boolean;
+    useSeoMode?: boolean;
 }
 
 export interface BlogPageInstance {
@@ -88,4 +89,5 @@ export interface BlogPageProps {
   showExcerpt?: boolean;
   showDescription?: boolean;
   useImports?: boolean;
+  useSeoMode?: boolean;
 }
