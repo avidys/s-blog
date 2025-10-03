@@ -1,6 +1,6 @@
 {
   "name": "@avidys/s-blog",
-  "version": "1.12.0",
+  "version": "2.0.0",
   "description": "A blog component built with SvelteKit and Markdown",
   "author": "Avidys",
   "license": "GPL-3.0-only",
@@ -44,6 +44,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js",
+      "seo": "./dist/seo/index.js",
       "default": "./dist/index.js"
     },
     "./markdownMetadataPlugin": {

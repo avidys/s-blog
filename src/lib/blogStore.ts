@@ -2,6 +2,8 @@ import { writable } from 'svelte/store';
 import type { IBlogPost } from './types.ts';
 import { logger } from './logger.js';
 
+export const blogRefreshCounter = writable(0);
+
 function createBlogStore() {
   const { subscribe, update } = writable<{
     posts: IBlogPost[];
@@ -36,10 +38,10 @@ function createBlogStore() {
           const basePath = cleanPath === 'data' ? './static/data' : `../${cleanPath}`;
           
           const [metadata, categories, years, authors] = await Promise.all([
-            import(`${basePath}/postsMetadata.json`),
-            import(`${basePath}/categories.json`),
-            import(`${basePath}/years.json`),
-            import(`${basePath}/authors.json`)
+            import(/* @vite-ignore */ `${basePath}/postsMetadata.json`),
+            import(/* @vite-ignore */ `${basePath}/categories.json`),
+            import(/* @vite-ignore */ `${basePath}/years.json`),
+            import(/* @vite-ignore */ `${basePath}/authors.json`)
           ]);
           
           update(state => ({

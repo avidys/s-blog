@@ -11,6 +11,7 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
   import BlogPost from './BlogPost.svelte';
   import type { IBlogPost, BlogPageProps } from './types.ts';
   import { blogStore } from './blogStore.js';
@@ -26,6 +27,7 @@
   export let showDate: BlogPageProps['showDate'] = true;
   export let showDescription: BlogPageProps['showDescription'] = true;
   export let useImports: BlogPageProps['useImports'] = false;
+  export let useSeoMode: boolean = false;
 
   // Add method to reset all selections
   export function resetSelections() {
@@ -91,7 +93,13 @@
   };
 
   const handleReadMore = (post: IBlogPost) => {
-    selectedPost = post;
+    if (useSeoMode) {
+      // Navigate to the individual blog post page for SEO
+      goto(`/blog/${post.slug}`);
+    } else {
+      // Use SPA behavior (default)
+      selectedPost = post;
+    }
   };
 
   const handleSearch = (event: Event) => {

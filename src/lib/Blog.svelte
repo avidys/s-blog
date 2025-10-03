@@ -70,6 +70,7 @@
     export let showAuthor = true;
     export let showDate = true;
     export let showDescription = true;
+    export let useSeoMode = false;
 
     // Determine if theme was provided as a prop
     const themeProvided = (theme !== undefined);
@@ -139,6 +140,7 @@
         {showAuthor}
         {showDate}
         {showDescription}
+        {useSeoMode}
         dataPath={defDataPath}
         useImports={false}
     />

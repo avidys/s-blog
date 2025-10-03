@@ -21,6 +21,7 @@
 <script lang="ts">
 	import type { IBlogPost } from './types.ts';
 	import { onMount } from 'svelte';
+	import { blogConfig } from './config.js';
 
   export let post : IBlogPost;
   export let onAuthorClick: (author: string) => void = () => {};
@@ -78,14 +79,14 @@
     <meta property="og:title" content={post.title} />
     <meta property="og:description" content={post.description || (post.content?.slice(0, 160) ?? '')} />
     <meta property="og:site_name" content={post.title} />
-    <meta property="og:image" content="/blog-banner.webp" />
+    <meta property="og:image" content={blogConfig.images.default} />
 
-    <meta name="twitter:site" content="@McBride1105" />
-    <meta name="twitter:creator" content="@McBride1105" />
+    <meta name="twitter:site" content={blogConfig.twitter.site} />
+    <meta name="twitter:creator" content={blogConfig.twitter.creator} />
     <meta name="twitter:title" content={post.title} />
     <meta name="twitter:description" content={post.description || (post.content?.slice(0, 160) ?? '')} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image:src" content="/blog-banner.webp" />
+    <meta name="twitter:image:src" content={blogConfig.images.twitter} />
     <meta name="twitter:widgets:new-embed-design" content="on" />
 
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
