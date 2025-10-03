@@ -2,9 +2,35 @@
 
 The `useSeoMode` property enables SEO-friendly navigation by using proper URL routing instead of SPA behavior.
 
-## Usage
+## Setup
 
-### Basic Example
+### 1. Install the Package
+
+```bash
+npm install @avidys/s-blog
+```
+
+### 2. Create SEO Routes
+
+In your SvelteKit app, create the following route files:
+
+#### `src/routes/robots.txt/+server.ts`
+
+```typescript
+import { createRobotsHandler } from '@avidys/s-blog';
+
+export const GET = createRobotsHandler('https://your-domain.com');
+```
+
+#### `src/routes/sitemap.xml/+server.ts`
+
+```typescript
+import { createSitemapHandler } from '@avidys/s-blog';
+
+export const GET = createSitemapHandler('https://your-domain.com', 'data');
+```
+
+### 3. Add Component to your route
 
 ```svelte
 <script>
@@ -34,116 +60,74 @@ The `useSeoMode` property enables SEO-friendly navigation by using proper URL ro
   showAuthor={true}
   showDate={true}
   showDescription={true}
-  customColors={{
-    textBodyColor: 'var(--fg-1)',
-    textSubtitleColor: 'var(--fg-2)',
-    textTitleColor: 'var(--fg-3)',
-    backgroundColor: 'var(--bg-0)',
-    cardBackgroundColor: 'var(--bg-1)',
-    borderColor: 'var(--bg-2)',
-    buttonBackgroundColor: 'var(--color-logo)',
-    buttonBorderColor: 'var(--color-logo-hover)',
-    linkColor: 'var(--accent-1)',
-    linkHoverColor: 'var(--accent-2)'
-  }}
 />
 ```
 
 ## Behavior
 
 ### When `useSeoMode={true}`:
+
 - Clicking "Read More" navigates to `/blog/{slug}`
 - Each blog post gets its own URL
 - Better for SEO and social sharing
 - Requires individual blog post routes to be set up
 
 ### When `useSeoMode={false}` (default):
+
 - Clicking "Read More" shows the post inline
 - Single-page application behavior
 - No additional routes needed
 - Faster navigation within the blog
 
-## Requirements for SEO Mode
 
-When using `useSeoMode={true}`, you need to set up the individual blog post route:
+## API Reference
+
+### `createRobotsHandler(siteUrl: string)`
+
+Creates a robots.txt handler for your SvelteKit app.
+
+**Parameters:**
+- `siteUrl` - The base URL of your site (e.g., 'https://example.com')
+
+**Returns:** SvelteKit RequestHandler
+
+### `createSitemapHandler(siteUrl: string, dataPath?: string)`
+
+Creates a sitemap.xml handler for your SvelteKit app.
+
+**Parameters:**
+- `siteUrl` - The base URL of your site (e.g., 'https://example.com')
+- `dataPath` - Path to the blog data (default: 'data')
+
+**Returns:** SvelteKit RequestHandler
+
+## Environment Variables
+
+You can use environment variables for configuration:
+
+```env
+SITE_URL=https://your-domain.com
+BLOG_DATA_PATH=static/data
+```
+
+Then in your route files:
 
 ```typescript
-// src/routes/blog/[slug]/+page.svelte
-<script>
-  import { Blog } from '@avidys/s-blog';
-  import { page } from '$app/stores';
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
+import { createSitemapHandler } from '@avidys/s-blog';
 
-  let selectedSlug = $state('');
-  let selectedPost = $state(null);
-  let isLoading = $state(true);
-
-  $effect(() => {
-    selectedSlug = $page.params.slug || '';
-    if (selectedSlug) {
-      loadPostBySlug(selectedSlug);
-    }
-  });
-
-  async function loadPostBySlug(slug: string) {
-    try {
-      const response = await fetch('/data/postsMetadata.json');
-      if (!response.ok) throw new Error('Failed to fetch posts metadata');
-      
-      const postsMetadata = await response.json();
-      const postData = postsMetadata[slug];
-      
-      if (!postData) {
-        goto('/blog');
-        return;
-      }
-      
-      const contentResponse = await fetch(`/posts/${slug}.html`);
-      if (!contentResponse.ok) throw new Error('Failed to fetch post content');
-      
-      const content = await contentResponse.text();
-      
-      selectedPost = {
-        ...postData,
-        slug: slug,
-        content: content
-      };
-      
-      isLoading = false;
-    } catch (error) {
-      console.error('Error loading post:', error);
-      goto('/blog');
-    }
-  }
-</script>
-
-{#if isLoading}
-  <div class="loading">Loading post...</div>
-{:else if selectedPost}
-  <article class="blog-post">
-    <h1>{selectedPost.title}</h1>
-    {#if selectedPost.subtitle}
-      <p class="subtitle">{selectedPost.subtitle}</p>
-    {/if}
-    <div class="post-meta">
-      <span>By {selectedPost.author}</span>
-      <span>on {selectedPost.date}</span>
-    </div>
-    <div class="post-content">
-      {@html selectedPost.content}
-    </div>
-  </article>
-  <div class="back-button">
-    <button onclick={() => goto('/blog')}>← Back to Blog</button>
-  </div>
-{:else}
-  <div class="error">
-    <h1>Post Not Found</h1>
-    <button onclick={() => goto('/blog')}>← Back to Blog</button>
-  </div>
-{/if}
+export const GET = createSitemapHandler(
+  process.env.SITE_URL!,
+  process.env.BLOG_DATA_PATH || 'data'
+);
 ```
+
+## Features
+
+- **Automatic sitemap generation** from blog post metadata
+- **SEO-friendly robots.txt** with sitemap reference
+- **Configurable data paths** for different deployment setups
+- **Proper caching headers** for optimal performance
+- **Error handling** for missing data files
 
 ## Benefits
 
